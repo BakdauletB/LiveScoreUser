@@ -1,0 +1,112 @@
+plugins {
+    id 'com.android.application'
+    id 'org.jetbrains.kotlin.android'
+}
+
+android {
+    namespace 'com.example.livescoreuser'
+    compileSdk 32
+
+    defaultConfig {
+        applicationId "com.example.livescoreuser"
+        minSdk 21
+        targetSdk 32
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+}
+
+dependencies {
+
+    implementation "androidx.core:core-ktx:$kotlinCoreVersion"
+
+    implementation "androidx.compose.ui:ui:$compose_version"
+    implementation "androidx.compose.material:material:$compose_material_version"
+    implementation "androidx.compose.ui:ui-tooling-preview:$compose_version"
+
+
+
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycleVersion"
+    implementation "androidx.activity:activity-compose:$composeActivityVersion"
+    implementation "androidx.compose.runtime:runtime-livedata:1.1.1"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-compose:$lifecycleViewModelVersion"
+    implementation "com.google.firebase:firebase-messaging-ktx:$firebaseVersion"
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+    androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_version"
+    debugImplementation "androidx.compose.ui:ui-tooling:$compose_version"
+
+    //Navigation
+    implementation("androidx.navigation:navigation-compose:$navigationVersion")
+    //AnimatedNavigation
+    implementation "com.google.accompanist:accompanist-navigation-animation:$navigationAnimationVersion"
+
+    //System UI
+    implementation "com.google.accompanist:accompanist-systemuicontroller:$systemUiControllerVersion"
+
+    //OzForensics
+
+// Koin
+    // Koin core features
+    implementation "io.insert-koin:koin-core:$koin_core"
+    // Koin main features for Android (Scope,ViewModel ...)
+    implementation "io.insert-koin:koin-android:$koin_version"
+    implementation "io.insert-koin:koin-androidx-compose:$koin_version"
+    implementation "io.insert-koin:koin-core-ext:3.0.1"
+
+
+
+
+
+    implementation 'androidx.work:work-runtime-ktx:2.7.1'
+
+
+    // retrofit
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.9.3'
+
+    //retrofit
+    implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
+    //converter-gson
+    implementation "com.squareup.retrofit2:converter-gson:$retrofitVersion"
+    //okhttp3
+    implementation 'com.squareup.okhttp3:okhttp:4.9.3'
+
+    //Chuck logging
+    debugImplementation "com.github.chuckerteam.chucker:library:3.5.2"
+    releaseImplementation "com.github.chuckerteam.chucker:library-no-op:3.5.2"
+
+
+    implementation "com.google.accompanist:accompanist-pager:0.13.0"
+    implementation "com.google.accompanist:accompanist-pager-indicators:0.13.0"
+
+    implementation("io.coil-kt:coil-compose:$coilVersion")
+
+    // The compose calendar library
+    implementation 'com.kizitonwose.calendar:compose:2.0.4'
+
+    // enables support of LocalDateTime API for API level below 26
+    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:$desugarJdkVersion")
+
+    implementation "com.chargemap.compose:numberpicker:1.0.3"
+
+    implementation "com.google.accompanist:accompanist-systemuicontroller:0.17.0"
+
+    implementation "com.google.accompanist:accompanist-permissions:0.24.6-alpha"
+}

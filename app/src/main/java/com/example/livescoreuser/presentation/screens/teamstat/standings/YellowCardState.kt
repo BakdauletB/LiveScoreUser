@@ -1,6 +1,6 @@
 package com.example.livescore.presentation.screens.standings
 
-import com.example.livescore.data.remote.dto.PlayerGoalsResponse
+import com.example.livescoresdu.data.response.PlayerGoalsResponse
 
 
 data class YellowCardState(

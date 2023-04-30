@@ -1,8 +1,6 @@
 package com.example.livescoresdu.presentation.screens
 
-import android.net.Uri
 import android.util.Log
-import androidx.activity.compose.ManagedActivityResultLauncher
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
@@ -11,7 +9,9 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.pullrefresh.PullRefreshIndicator
 import androidx.compose.material.pullrefresh.pullRefresh
@@ -23,12 +23,14 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.navigation.NavController
+import coil.compose.rememberAsyncImagePainter
 import com.example.livescoresdu.data.model.InfoModel
 import com.example.livescoresdu.data.response.GameDateResponse
 import com.example.livescoresdu.presentation.screens.bundle.IdBundle
@@ -38,14 +40,17 @@ import com.example.livescoresdu.presentation.viewmodels.MatchesViewModel
 import com.example.livescoresdu.presentation.viewmodels.swiftFileMimeTypes
 import com.example.livescoresdu.uilibrary.values.*
 import com.example.livescoreuser.R
+import com.example.livescoreuser.data.response.GetNewDateResponse
 import com.google.accompanist.pager.ExperimentalPagerApi
-import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
+import com.mabn.calendarlibrary.ExpandableCalendar
+import com.mabn.calendarlibrary.core.calendarDefaultTheme
 import ffinbank.myfreedom.uilibrary.values.*
 import ffinbank.utils.state.UiStatus
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.getViewModel
 import java.io.File
+import java.time.LocalDate
 
 @OptIn(ExperimentalPagerApi::class, ExperimentalMaterialApi::class, ExperimentalComposeUiApi::class)
 @Composable
@@ -75,12 +80,9 @@ fun MatchesScreen(navController: NavController,
     val group = remember { mutableStateOf("") }
     val scope = rememberCoroutineScope()
     val keyboardController = LocalSoftwareKeyboardController.current
+    val newDate = viewModel.newDate
 
-    val loadGame = viewModel.game
-    val game1 = viewModel.game1
-    val game2 = viewModel.game2
-    val game3 = viewModel.game3
-    val game4 = viewModel.game4
+
     val alert = remember {
         mutableStateOf(false)
     }
@@ -120,24 +122,15 @@ fun MatchesScreen(navController: NavController,
         onRefresh = { scope.launch {
             viewModel.refresh()
         } })
+    val currentDate = remember { mutableStateOf(LocalDate.now()) }
+    viewModel.selectDate.value = currentDate.value.toString()
     LaunchedEffect(key1 = Unit) {
-        if(viewModel.game.isEmpty()){
-            viewModel.loadMatches()
-        }
-        if(viewModel.game1.isEmpty()){
-            viewModel.loadMatches1()
-        }
-        if(viewModel.game2.isEmpty()){
-            viewModel.loadMatches2()
-        }
-        if(viewModel.game3.isEmpty()){
-            viewModel.loadMatches3()
-        }
-        if(viewModel.game4.isEmpty()){
-            viewModel.loadMatches4()
+        if(viewModel.newDate.isEmpty()){
+            viewModel.loadNewDate(currentDate.value.toString())
         }
 
     }
+
     val onDocumentClick = remember {
         mutableStateOf(false)
     }
@@ -185,44 +178,33 @@ fun MatchesScreen(navController: NavController,
                             .padding(start = spacing6, end = spacing6),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Column(
-                            modifier = Modifier
-                                .weight(0.2f)
-                                .background(
-                                    color = Base200,
-                                    shape = RoundedCornerShape(cornerRadius16)
-                                )
-                                .clip(RoundedCornerShape(cornerRadius12))
-                                .padding(spacing6),
-                            verticalArrangement = Arrangement.Center,
-                            horizontalAlignment = Alignment.CenterHorizontally
-                        ) {
-                            Text(
-                                text = "LIVE",
-                                style = semiBold,
-                                fontWeight = FontWeight.SemiBold,
-                                fontSize = fontSize10,
-                            )
-                        }
+
                         Row(modifier = Modifier.weight(1f)) {
-                            MultiTabLayout(
-                                pagerState = pagerState,
-                                rewardPeriods = viewModel.incomePeriods,
-//                                selectedPeriod = viewModel.selectedPeriod,
-                                startPadding = spacing4,
-                                endPadding = spacing4
-                            )
+//                            viewModel.selectDate.value = currentDate.value.toString()
+                            val scrollState = rememberScrollState()
+                            Column(Modifier.verticalScroll(scrollState)) {
+                                ExpandableCalendar(
+                                    theme = calendarDefaultTheme.copy(
+                                        dayShape = CircleShape,
+                                        backgroundColor = Color.Black,
+                                        selectedDayBackgroundColor = Color.White,
+                                        dayValueTextColor = Color.White,
+                                        selectedDayValueTextColor = Color.Black,
+                                        headerTextColor = Color.White,
+                                        weekDaysTextColor = Color.White
+                                    ), onDayClick = {
+                                        currentDate.value = it
+                                    }, onLiveClick = {
+//                                        live.value = true
+//                                        viewModel.loadGameLive()
+
+                                    }
+                                )
+                                Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxSize()) {
+                                    Text("Selected date: ${currentDate.value}")
+                                }
+                            }
                         }
-                        Image(painter = painterResource(id = R.drawable.calendar),
-                            contentDescription = null,
-                            modifier = Modifier
-                                .width(spacing32)
-                                .height(spacing32)
-                                .weight(0.1f)
-                                .clickable {
-                                    navController.navigate(HomeDestinations.CALENDAR)
-//                                    openCalendarBottomSheet.value = true
-                                })
                     }
                 }
             }, backgroundColor = Base900,
@@ -231,18 +213,15 @@ fun MatchesScreen(navController: NavController,
                 modifier = Modifier
                     .fillMaxSize()
             ) {
-
-                HorizontalPager(
-                    state = pagerState, modifier = Modifier.wrapContentHeight(),
-                    verticalAlignment = Alignment.Top
-                ) { page ->
-                    when (page) {
-                        0 -> ListGame(navController = navController, gameDateResponse = loadGame, alert,)
-                        1 -> ListGame1(navController = navController, game1, alert,)
-                        2 -> ListGame2(navController = navController, game2, alert)
-                        3 -> ListGame3(navController = navController, game3, alert)
-                        4 -> ListGame3(navController = navController, game4, alert)
-                    }
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                ) {
+//                    if(live.value){
+//                        ListLiveGame(navController,viewModel.gameLive)
+//                    } else {
+                        ListGame(navController = navController, newDateResponse = newDate, alert,)
+                    //}
                 }
             }
             it.calculateBottomPadding()
@@ -298,7 +277,8 @@ fun MatchesScreen(navController: NavController,
 }
 @Composable
 fun ListGame(navController: NavController,
-             gameDateResponse: SnapshotStateList<GameDateResponse>,
+//             gameDateResponse: SnapshotStateList<GameDateResponse>,
+             newDateResponse: SnapshotStateList<GetNewDateResponse>,
              alert: MutableState<Boolean>,
              viewModel: MatchesViewModel = getViewModel()){
     val currentInfo = remember {
@@ -309,83 +289,22 @@ fun ListGame(navController: NavController,
 
     Column() {
         Spacer(modifier = androidx.compose.ui.Modifier.height(spacing10))
-        Spacer(modifier = Modifier
-            .fillMaxWidth()
-            .background(color = Base400)
-            .padding(spacing1))
         Spacer(modifier = androidx.compose.ui.Modifier.height(spacing16))
-        Row(modifier = Modifier.clickable {
-//            navController.navigate(Screen.StandingScreen.route)
-        }, verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.Center) {
-            Column(modifier = Modifier
-                .padding(start = spacing10)
-                .background(color = Base50, RoundedCornerShape(cornerRadius12))
-                .padding(spacing6),) {
-                Image(painter = painterResource(id = R.drawable.sdu_logo),
-                    contentDescription = null,
-                    modifier = androidx.compose.ui.Modifier
-                        .width(spacing32)
-                        .height(spacing24))
-            }
-            Spacer(modifier = androidx.compose.ui.Modifier.width(spacing16))
-            Column(modifier = Modifier.fillMaxWidth()) {
-                Text(text = "SDU Football league",
-                    color = Base50,
-                    fontSize = fontSize16,
-                    fontWeight = FontWeight.SemiBold,
-                    style = semiBold)
-                Spacer(modifier = androidx.compose.ui.Modifier.height(spacing6))
-                Text(text = "Almaty",
-                    color = Base700,
-                    fontSize = fontSize13,
-                    fontWeight = FontWeight.Medium,
-                    style = medium)
-
+        Column() {
+            newDateResponse.forEach {
+                LeagueItem(newDateResponse = it, onClick = {
+                    navController.navigate(HomeDestinations.STANDING)
+                })
             }
         }
-//        Documents(
-//            documents = viewModel.documents,
-//            onOpenBottomSheetClick = {
-////                currentInfo.value =
-////                    viewModel.documentInfo.parseToInfoModel(context = context)
-////                openInfoBottomSheet.value = true
-//            },
-//            onAddDocumentClick = {
-//                //TODO Open documents
-//                onDocumentClick.value = true
-//            },
-//            maxSize = viewModel.documentsMaxSize,
-//            onDeleteDocumentClick = {
-//                viewModel.documents.remove(it)
-//                it.delete()
-//            }
-//        )
-
-
+        Spacer(modifier = Modifier.height(spacing16))
         LazyColumn(modifier = Modifier
             .background(color = Base900)){
                 item {
-                    Row(verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(spacing16)
-                            .clickable {
-                                alert.value = true
-                            }
-                            .background(shape = RoundedCornerShape(cornerRadius12), color = Base800)
-                            .clip(RoundedCornerShape(cornerRadius16))
-                            .padding(spacing16),
-                        horizontalArrangement = Arrangement.Center
-                    ) {
-                        Image(painter = painterResource(id = R.drawable.ic_add),
-                            contentDescription = null)
-                    }
-                }
-                item {
-                    gameDateResponse.forEachIndexed { index, gameDateResponse ->
-                        MatchItem(modifier = Modifier, gameDateResponse = gameDateResponse, onClick = {
-                            IdBundle.id = gameDateResponse.protocolId
-                            navController.navigate(HomeDestinations.MATCH_DETAIL + "/${gameDateResponse.protocolId}")
+                    newDateResponse.getOrNull(0)?.games?.forEachIndexed { index, newDateResponse ->
+                        MatchItem(modifier = Modifier, games = newDateResponse, onClick = {
+                            IdBundle.id = newDateResponse.protocolId
+                            navController.navigate(HomeDestinations.MATCH_DETAIL + "/${newDateResponse.protocolId}")
                         })
                     }
                 }
@@ -407,239 +326,37 @@ fun ListGame(navController: NavController,
 //    }
 }
 @Composable
-fun ListGame1(navController: NavController,
-              gameDateResponse: SnapshotStateList<GameDateResponse>,
-              alert: MutableState<Boolean>){
-    Column() {
-        Spacer(modifier = androidx.compose.ui.Modifier.height(spacing10))
-        Spacer(modifier = Modifier
-            .fillMaxWidth()
-            .background(color = Base400)
-            .padding(spacing1))
-        Spacer(modifier = androidx.compose.ui.Modifier.height(spacing16))
-        Row(modifier = Modifier.clickable {
-//            navController.navigate(Screen.StandingScreen.route)
-        }, verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.Center) {
-            Column(modifier = Modifier
-                .padding(start = spacing10)
-                .background(color = Base50, RoundedCornerShape(cornerRadius12))
-                .padding(spacing6),) {
-                Image(painter = painterResource(id = R.drawable.sdu_logo),
-                    contentDescription = null,
-                    modifier = androidx.compose.ui.Modifier
-                        .width(spacing32)
-                        .height(spacing24))
-            }
-            Spacer(modifier = androidx.compose.ui.Modifier.width(spacing16))
-            Column(modifier = Modifier.fillMaxWidth()) {
-                Text(text = "SDU Football league",
-                    color = Base50,
-                    fontSize = fontSize16,
-                    fontWeight = FontWeight.SemiBold,
-                    style = semiBold)
-                Spacer(modifier = androidx.compose.ui.Modifier.height(spacing6))
-                Text(text = "Almaty",
-                    color = Base700,
-                    fontSize = fontSize13,
-                    fontWeight = FontWeight.Medium,
-                    style = medium)
-
-            }
+fun LeagueItem(
+    newDateResponse: GetNewDateResponse,
+    onClick: () -> Unit
+){
+    Row(modifier = Modifier.clickable {
+                                      onClick()
+    }, verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.Center) {
+        Column(modifier = Modifier
+            .padding(start = spacing10)
+            .background(color = Base50, RoundedCornerShape(cornerRadius12))
+            .padding(spacing6),) {
+            Image(painter = rememberAsyncImagePainter(newDateResponse.tournamentLogo),
+                contentDescription = null,
+                modifier = androidx.compose.ui.Modifier
+                    .width(spacing32)
+                    .height(spacing24))
         }
+        Spacer(modifier = androidx.compose.ui.Modifier.width(spacing16))
+        Column(modifier = Modifier.fillMaxWidth()) {
+            Text(text = newDateResponse.tournamentName,
+                color = Base50,
+                fontSize = fontSize16,
+                fontWeight = FontWeight.SemiBold,
+                style = semiBold)
+            Spacer(modifier = androidx.compose.ui.Modifier.height(spacing6))
+            Text(text = newDateResponse.groupName,
+                color = Base700,
+                fontSize = fontSize13,
+                fontWeight = FontWeight.Medium,
+                style = medium)
 
-
-        LazyColumn(modifier = Modifier
-            .background(color = Base900)){
-            item {
-                Row(verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(spacing16)
-                        .clickable {
-                            alert.value = true
-                        }
-                        .background(shape = RoundedCornerShape(cornerRadius12), color = Base800)
-                        .clip(RoundedCornerShape(cornerRadius16))
-                        .padding(spacing16),
-                    horizontalArrangement = Arrangement.Center
-                ) {
-                    Image(painter = painterResource(id = R.drawable.ic_add),
-                        contentDescription = null)
-                }
-            }
-            item {
-                gameDateResponse.forEachIndexed { index, gameDateResponse ->
-                    MatchItem(modifier = Modifier, gameDateResponse = gameDateResponse, onClick = {
-                        IdBundle.id = gameDateResponse.protocolId
-                        navController.navigate(HomeDestinations.MATCH_DETAIL + "/${gameDateResponse.protocolId}")
-                    })
-                }
-            }
-//            items(gameDateResponse.){ game ->
-//                MatchItem(modifier = Modifier, gameDateResponse = game) {
-////                    navController.navigate(Screen.MatchDetailsScreen.route + "/${game.gameId}")
-//
-//                }
-//            }
         }
     }
-
-}
-@Composable
-fun ListGame2(navController: NavController,
-             gameDateResponse: SnapshotStateList<GameDateResponse>,
-             alert: MutableState<Boolean>){
-    Column() {
-        Spacer(modifier = androidx.compose.ui.Modifier.height(spacing10))
-        Spacer(modifier = Modifier
-            .fillMaxWidth()
-            .background(color = Base400)
-            .padding(spacing1))
-        Spacer(modifier = androidx.compose.ui.Modifier.height(spacing16))
-        Row(modifier = Modifier.clickable {
-//            navController.navigate(Screen.StandingScreen.route)
-        }, verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.Center) {
-            Column(modifier = Modifier
-                .padding(start = spacing10)
-                .background(color = Base50, RoundedCornerShape(cornerRadius12))
-                .padding(spacing6),) {
-                Image(painter = painterResource(id = R.drawable.sdu_logo),
-                    contentDescription = null,
-                    modifier = androidx.compose.ui.Modifier
-                        .width(spacing32)
-                        .height(spacing24))
-            }
-            Spacer(modifier = androidx.compose.ui.Modifier.width(spacing16))
-            Column(modifier = Modifier.fillMaxWidth()) {
-                Text(text = "SDU Football league",
-                    color = Base50,
-                    fontSize = fontSize16,
-                    fontWeight = FontWeight.SemiBold,
-                    style = semiBold)
-                Spacer(modifier = androidx.compose.ui.Modifier.height(spacing6))
-                Text(text = "Almaty",
-                    color = Base700,
-                    fontSize = fontSize13,
-                    fontWeight = FontWeight.Medium,
-                    style = medium)
-
-            }
-        }
-
-
-        LazyColumn(modifier = Modifier
-            .background(color = Base900)){
-            item {
-                Row(verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(spacing16)
-                        .clickable {
-                            alert.value = true
-                        }
-                        .background(shape = RoundedCornerShape(cornerRadius12), color = Base800)
-                        .clip(RoundedCornerShape(cornerRadius16))
-                        .padding(spacing16),
-                    horizontalArrangement = Arrangement.Center
-                ) {
-                    Image(painter = painterResource(id = R.drawable.ic_add),
-                        contentDescription = null)
-                }
-            }
-            item {
-                gameDateResponse.forEachIndexed { index, gameDateResponse ->
-                    MatchItem(modifier = Modifier, gameDateResponse = gameDateResponse, onClick = {
-                        IdBundle.id = gameDateResponse.protocolId
-                        navController.navigate(HomeDestinations.MATCH_DETAIL + "/${gameDateResponse.protocolId}")
-                    })
-                }
-            }
-//            items(gameDateResponse.){ game ->
-//                MatchItem(modifier = Modifier, gameDateResponse = game) {
-////                    navController.navigate(Screen.MatchDetailsScreen.route + "/${game.gameId}")
-//
-//                }
-//            }
-        }
-    }
-
-}
-@Composable
-fun ListGame3(navController: NavController,
-              gameDateResponse: SnapshotStateList<GameDateResponse>,
-              alert: MutableState<Boolean>){
-    Column() {
-        Spacer(modifier = androidx.compose.ui.Modifier.height(spacing10))
-        Spacer(modifier = Modifier
-            .fillMaxWidth()
-            .background(color = Base400)
-            .padding(spacing1))
-        Spacer(modifier = androidx.compose.ui.Modifier.height(spacing16))
-        Row(modifier = Modifier.clickable {
-//            navController.navigate(Screen.StandingScreen.route)
-        }, verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.Center) {
-            Column(modifier = Modifier
-                .padding(start = spacing10)
-                .background(color = Base50, RoundedCornerShape(cornerRadius12))
-                .padding(spacing6),) {
-                Image(painter = painterResource(id = R.drawable.sdu_logo),
-                    contentDescription = null,
-                    modifier = androidx.compose.ui.Modifier
-                        .width(spacing32)
-                        .height(spacing24))
-            }
-            Spacer(modifier = androidx.compose.ui.Modifier.width(spacing16))
-            Column(modifier = Modifier.fillMaxWidth()) {
-                Text(text = "SDU Football league",
-                    color = Base50,
-                    fontSize = fontSize16,
-                    fontWeight = FontWeight.SemiBold,
-                    style = semiBold)
-                Spacer(modifier = androidx.compose.ui.Modifier.height(spacing6))
-                Text(text = "Almaty",
-                    color = Base700,
-                    fontSize = fontSize13,
-                    fontWeight = FontWeight.Medium,
-                    style = medium)
-
-            }
-        }
-
-
-        LazyColumn(modifier = Modifier
-            .background(color = Base900)){
-            item {
-                Row(verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(spacing16)
-                        .clickable {
-                            alert.value = true
-                        }
-                        .background(shape = RoundedCornerShape(cornerRadius12), color = Base800)
-                        .clip(RoundedCornerShape(cornerRadius16))
-                        .padding(spacing16),
-                    horizontalArrangement = Arrangement.Center
-                ) {
-                    Image(painter = painterResource(id = R.drawable.ic_add),
-                        contentDescription = null)
-                }
-            }
-            item {
-                gameDateResponse.forEachIndexed { index, gameDateResponse ->
-                    MatchItem(modifier = Modifier, gameDateResponse = gameDateResponse, onClick = {
-                        IdBundle.id = gameDateResponse.protocolId
-                        navController.navigate(HomeDestinations.MATCH_DETAIL + "/${gameDateResponse.protocolId}")
-                    })
-                }
-            }
-//            items(gameDateResponse.){ game ->
-//                MatchItem(modifier = Modifier, gameDateResponse = game) {
-////                    navController.navigate(Screen.MatchDetailsScreen.route + "/${game.gameId}")
-//
-//                }
-//            }
-        }
-    }
-
 }

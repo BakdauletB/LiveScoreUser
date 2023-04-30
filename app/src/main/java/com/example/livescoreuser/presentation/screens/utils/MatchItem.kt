@@ -10,30 +10,28 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import coil.compose.rememberAsyncImagePainter
-import coil.compose.rememberImagePainter
 import com.example.livescoresdu.data.model.convertDate
-import com.example.livescoresdu.data.response.GameDateResponse
+import com.example.livescoreuser.data.response.Games
 import ffinbank.myfreedom.uilibrary.values.*
 
 @Composable
 fun MatchItem(
     modifier: Modifier,
-    gameDateResponse: GameDateResponse,
-    onClick:(match:GameDateResponse)-> Unit
+    games: Games,
+    onClick:(match:Games)-> Unit
 ){
     Row(verticalAlignment = Alignment.CenterVertically,
         modifier = modifier
             .padding(spacing16)
-            .clickable { onClick(gameDateResponse) }
+            .clickable { onClick(games) }
             .background(shape = RoundedCornerShape(cornerRadius12), color = Base800)
             .clip(RoundedCornerShape(cornerRadius16))
             .padding(spacing16)
     ) {
         Text(text = "${
-            gameDateResponse.gameDateTime?.let { convertDate(it, fromFormat = "yyyy-MM-dd'T'HH:mm:ss", toFormat = "HH:mm")}
+            games.gameDateTime?.let { convertDate(it, fromFormat = "yyyy-MM-dd'T'HH:mm:ss", toFormat = "HH:mm")}
         }",color = Base500,
             fontSize = fontSize13,
             style = medium,
@@ -41,10 +39,10 @@ fun MatchItem(
         Spacer(modifier = Modifier.width(spacing16))
         Column(modifier = modifier.weight(1f)) {
             Row(horizontalArrangement = Arrangement.Center, verticalAlignment = Alignment.CenterVertically) {
-                Image(painter = rememberAsyncImagePainter(gameDateResponse.team1Logo), contentDescription = null, modifier = modifier.size(
+                Image(painter = rememberAsyncImagePainter(games.team1Logo), contentDescription = null, modifier = modifier.size(
                     spacing32))
                 Spacer(modifier = Modifier.width(spacing6))
-                Text(text = gameDateResponse.team1Name,
+                Text(text = games.team1Name,
                     color = Base500,
                     fontSize = fontSize13,
                     style = medium,
@@ -52,20 +50,17 @@ fun MatchItem(
             }
             Spacer(modifier = Modifier.height(spacing6))
             Row(horizontalArrangement = Arrangement.Center, verticalAlignment = Alignment.CenterVertically) {
-                Image(painter = rememberAsyncImagePainter(gameDateResponse.team2Logo), contentDescription = null,modifier= modifier.size(
+                Image(painter = rememberAsyncImagePainter(games.team2Logo), contentDescription = null,modifier= modifier.size(
                     spacing32))
                 Spacer(modifier = Modifier.width(spacing6))
-                Text(text = gameDateResponse.team2Name,
+                Text(text = games.team2Name,
                     color = Base500,
                     fontSize = fontSize13,
                     style = medium,
                     fontWeight = FontWeight.Medium)
             }
         }
-        Column {
-            Image(painter = painterResource(id = com.example.livescoresdu.R.drawable.ic_play), contentDescription = null,
-                modifier = Modifier.size(spacing28))
-        }
+
 
 //        Column() {
 //            Text(text = "${gameDateResponse.gameScore?.get(0)}",

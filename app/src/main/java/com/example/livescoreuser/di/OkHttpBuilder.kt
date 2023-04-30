@@ -1,19 +1,13 @@
 package com.example.livescoresdu.di
 
 import com.chuckerteam.chucker.api.ChuckerInterceptor
-import com.example.livescoresdu.BuildConfig
 import com.example.livescoresdu.presentation.screens.bundle.TokenBundle
 import com.example.livescoresdu.uilibrary.values.Constants
-import com.example.livescoresdu.uilibrary.values.Constants.BASE_URL
-import domain.retrofit.interceptors.AuthInterceptor
+import com.example.livescoreuser.di.interceptors.AuthInterceptor
 import domain.retrofit.interceptors.ExceptionInterceptor
 import domain.retrofit.interceptors.LogInterceptor
-import okhttp3.Credentials
-import okhttp3.Interceptor
 import okhttp3.OkHttpClient
-import okhttp3.Response
 import okhttp3.logging.HttpLoggingInterceptor
-import java.io.IOException
 import java.util.concurrent.TimeUnit
 import javax.net.ssl.HttpsURLConnection
 

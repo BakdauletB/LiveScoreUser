@@ -1,6 +1,6 @@
 package com.example.livescoresdu.uilibrary.values
 
-import com.example.livescoresdu.R
+import com.example.livescoreuser.R
 
 
 enum class MainDestinations(val title: String, val destination: String, val icon: Int = 0) {

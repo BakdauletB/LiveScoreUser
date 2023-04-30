@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
@@ -15,9 +16,16 @@ import androidx.compose.ui.unit.dp
 import com.example.livescore.presentation.screens.scorers.components.PlayerGoalsItem
 import com.example.livescore.presentation.screens.standings.RedCardState
 import com.example.livescore.util.*
+import com.example.livescoresdu.data.response.PlayerGoalsResponse
+import ffinbank.myfreedom.uilibrary.values.Base700
+import ffinbank.myfreedom.uilibrary.values.Base900
+import ffinbank.myfreedom.uilibrary.values.fontSize16
+import ffinbank.myfreedom.uilibrary.values.semiBold
+import ffinbank.myfreedom.uilibrary.values.spacing12
+import ffinbank.myfreedom.uilibrary.values.spacing16
 
 @Composable
-fun RedCards(redCardState: RedCardState){
+fun RedCards(redCardState: SnapshotStateList<PlayerGoalsResponse>){
     Column() {
         Text(text = "Red Cards",
             fontSize = fontSize16,
@@ -36,7 +44,7 @@ fun RedCards(redCardState: RedCardState){
             )
             .clip(RoundedCornerShape(spacing12))
         ){
-            redCardState.points.forEachIndexed { index,red->
+            redCardState.forEachIndexed { index,red->
                 PlayerGoalsItem(playerGoalsResponse = red,index+1)
             }
         }

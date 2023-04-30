@@ -12,7 +12,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import com.example.livescoresdu.R
+import com.example.livescoreuser.R
 import ffinbank.myfreedom.uilibrary.values.Base200
 import ffinbank.myfreedom.uilibrary.values.Base500
 import ffinbank.myfreedom.uilibrary.values.Base900

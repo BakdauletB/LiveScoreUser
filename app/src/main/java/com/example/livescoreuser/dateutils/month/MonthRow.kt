@@ -63,13 +63,13 @@ internal fun MonthRow(
                     painterResource(
                         id = navigateMonthDrawableIds.first,
                     ).let {
-                        Image(
-                            painter = it,
-                            contentDescription = stringResource(com.example.livescoresdu.R.string.navigate_month_previous_content_description),
-                            colorFilter = ColorFilter.tint(MaterialTheme.colors.onBackground),
-                            modifier = Modifier.padding(5.dp),
-                            alignment = Alignment.Center
-                        )
+//                        Image(
+//                            painter = it,
+//                            contentDescription = R.string.navigate_month_previous_content_description),
+//                            colorFilter = ColorFilter.tint(MaterialTheme.colors.onBackground),
+//                            modifier = Modifier.padding(5.dp),
+//                            alignment = Alignment.Center
+//                        )
                     }
                 }
             }
@@ -117,13 +117,13 @@ internal fun MonthRow(
                     painterResource(
                         id = navigateMonthDrawableIds.second,
                     ).let {
-                        Image(
-                            painter = it,
-                            contentDescription = stringResource(com.example.livescoresdu.R.string.navigate_month_next_content_description),
-                            colorFilter = ColorFilter.tint(MaterialTheme.colors.onBackground),
-                            modifier = Modifier.padding(5.dp),
-                            alignment = Alignment.Center
-                        )
+//                        Image(
+//                            painter = it,
+//                            contentDescription = stringResource(com.example.livescoresdu.R.string.navigate_month_next_content_description),
+//                            colorFilter = ColorFilter.tint(MaterialTheme.colors.onBackground),
+//                            modifier = Modifier.padding(5.dp),
+//                            alignment = Alignment.Center
+//                        )
                     }
                 }
             }

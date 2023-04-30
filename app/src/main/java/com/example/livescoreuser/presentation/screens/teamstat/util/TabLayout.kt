@@ -23,9 +23,22 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
+import com.example.livescoresdu.uilibrary.values.onClick
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.PagerState
 import com.google.accompanist.pager.pagerTabIndicatorOffset
+import ffinbank.myfreedom.uilibrary.values.Base200
+import ffinbank.myfreedom.uilibrary.values.Base50
+import ffinbank.myfreedom.uilibrary.values.Base700
+import ffinbank.myfreedom.uilibrary.values.Base900
+import ffinbank.myfreedom.uilibrary.values.cornerRadius10
+import ffinbank.myfreedom.uilibrary.values.cornerRadius12
+import ffinbank.myfreedom.uilibrary.values.cornerRadius8
+import ffinbank.myfreedom.uilibrary.values.fontSize14
+import ffinbank.myfreedom.uilibrary.values.medium
+import ffinbank.myfreedom.uilibrary.values.spacing4
+import ffinbank.myfreedom.uilibrary.values.spacing6
+import ffinbank.myfreedom.uilibrary.values.spacing8
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 

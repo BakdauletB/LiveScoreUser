@@ -1,5 +1,11 @@
-package com.example.livescore.util
-
+import com.example.livescoresdu.uilibrary.values.onClick
+import ffinbank.myfreedom.uilibrary.values.Base50
+import ffinbank.myfreedom.uilibrary.values.Base900
+import ffinbank.myfreedom.uilibrary.values.Orange500
+import ffinbank.myfreedom.uilibrary.values.cornerRadius8
+import ffinbank.myfreedom.uilibrary.values.fontSize14
+import ffinbank.myfreedom.uilibrary.values.medium
+import ffinbank.myfreedom.uilibrary.values.spacing6
 import android.view.MotionEvent
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

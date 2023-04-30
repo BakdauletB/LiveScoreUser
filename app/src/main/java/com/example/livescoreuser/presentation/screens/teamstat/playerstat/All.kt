@@ -7,6 +7,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
@@ -17,10 +18,11 @@ import com.example.livescore.presentation.screens.standings.PlayersGoalsState
 import com.example.livescore.presentation.screens.standings.RedCardState
 import com.example.livescore.presentation.screens.standings.YellowCardState
 import com.example.livescore.util.*
+import com.example.livescoresdu.data.response.PlayerGoalsResponse
 import ffinbank.myfreedom.uilibrary.values.*
 
 @Composable
-fun All(players: PlayersGoalsState, assistsGoalState: AssistsGoalState, redCardState: RedCardState, yellowCardState: YellowCardState){
+fun All(players: SnapshotStateList<PlayerGoalsResponse>, assistsGoalState: SnapshotStateList<PlayerGoalsResponse>, redCardState: SnapshotStateList<PlayerGoalsResponse>, yellowCardState: SnapshotStateList<PlayerGoalsResponse>){
     LazyColumn(){
         item {
             Text(text = "Goals",
@@ -40,7 +42,7 @@ fun All(players: PlayersGoalsState, assistsGoalState: AssistsGoalState, redCardS
                 )
                 .clip(RoundedCornerShape(spacing12))
             ){
-                players.points.forEachIndexed { index,goals ->
+                players.forEachIndexed { index,goals ->
                     PlayerGoalsItem(playerGoalsResponse = goals, count = index+1)
                 }
 
@@ -68,7 +70,7 @@ fun All(players: PlayersGoalsState, assistsGoalState: AssistsGoalState, redCardS
                 )
                 .clip(RoundedCornerShape(spacing12))
             ){
-                assistsGoalState.points.forEachIndexed {index,assists ->
+                assistsGoalState.forEachIndexed {index,assists ->
                     PlayerGoalsItem(playerGoalsResponse = assists,index+1)
                 }
             }
@@ -92,7 +94,7 @@ fun All(players: PlayersGoalsState, assistsGoalState: AssistsGoalState, redCardS
                 )
                 .clip(RoundedCornerShape(spacing12))
             ){
-                redCardState.points.forEachIndexed {index,redCard ->
+                redCardState.forEachIndexed {index,redCard ->
                     PlayerGoalsItem(playerGoalsResponse = redCard,index+1)
                 }
             }
@@ -119,7 +121,7 @@ fun All(players: PlayersGoalsState, assistsGoalState: AssistsGoalState, redCardS
                 )
                 .clip(RoundedCornerShape(spacing12))
             ){
-                yellowCardState.points.forEachIndexed {index,yellowCard ->
+                yellowCardState.forEachIndexed {index,yellowCard ->
                     PlayerGoalsItem(playerGoalsResponse = yellowCard,index+1)
                 }
             }

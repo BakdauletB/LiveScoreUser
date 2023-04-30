@@ -1,58 +1,70 @@
 package com.example.livescore.presentation.screens.standings.components
 
+import MulTabLayout
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.livescore.R
-import com.example.livescore.presentation.Screen
-import com.example.livescore.presentation.screens.matches.components.CalendarPeriodModel
-import com.example.livescore.presentation.screens.matches.components.MatchesViewModel
-import com.example.livescore.presentation.screens.standings.StandingsViewModel
 import com.example.livescore.util.*
+import com.example.livescoresdu.presentation.viewmodels.MatchesViewModel
+import com.example.livescoreuser.R
+import com.example.livescoreuser.presentation.screens.teamstat.standings.components.StandingsViewModel
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
-import com.google.accompanist.swiperefresh.SwipeRefresh
-import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
+import ffinbank.myfreedom.uilibrary.values.Base50
+import ffinbank.myfreedom.uilibrary.values.Base700
+import ffinbank.myfreedom.uilibrary.values.cornerRadius12
+import ffinbank.myfreedom.uilibrary.values.fontSize13
+import ffinbank.myfreedom.uilibrary.values.fontSize16
+import ffinbank.myfreedom.uilibrary.values.medium
+import ffinbank.myfreedom.uilibrary.values.semiBold
+import ffinbank.myfreedom.uilibrary.values.spacing10
+import ffinbank.myfreedom.uilibrary.values.spacing16
+import ffinbank.myfreedom.uilibrary.values.spacing24
+import ffinbank.myfreedom.uilibrary.values.spacing32
+import ffinbank.myfreedom.uilibrary.values.spacing6
 import org.koin.androidx.compose.getViewModel
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 fun StandingScreen(
     viewModel: StandingsViewModel = getViewModel(),
-    bottomNavHide: (Boolean) -> Unit,
-    matchesViewModel: MatchesViewModel = getViewModel(),
     onBackClick: () -> Unit
 ) {
     val pagerState = rememberPagerState(5)
-    val matchesGoals = viewModel.state.value
-    val points = viewModel.pointsState.value
-    val playersGoals = viewModel.playerState.value
-    val assists = viewModel.assistState.value
-    val redCards = viewModel.redcardState.value
-    val yellowCards = viewModel.yellowCardState.value
-    val teamRedCards = viewModel.teamRedCardsState.value
-    val teamYellowCards = viewModel.teamYellowCardsState.value
+    val scope = rememberCoroutineScope()
+
+    val matchesGoals = viewModel.goals
+    val points = viewModel.points
+    val playersGoals = viewModel.playerGoals
+    val assists = viewModel.assists
+    val redCards = viewModel.redCards
+    val yellowCards = viewModel.yellowCards
+    val teamRedCards = viewModel.teamRedCards
+    val teamYellowCards = viewModel.teamYellowCards
+    LaunchedEffect(key1 = scope){
+        viewModel.getAssists()
+        viewModel.getGoals()
+        viewModel.getPoints()
+        viewModel.getPlayerGoals()
+        viewModel.getRedCards()
+        viewModel.getYellowCards()
+        viewModel.getTeamRedCards()
+        viewModel.getTeamYellowCards()
+    }
 
     Box(
         modifier = Modifier
@@ -84,7 +96,9 @@ fun StandingScreen(
                         .padding(spacing6),) {
                         Image(painter = painterResource(id = R.drawable.sdu_logo),
                             contentDescription = null,
-                            modifier = Modifier.width(spacing32).height(spacing24))
+                            modifier = Modifier
+                                .width(spacing32)
+                                .height(spacing24))
                     }
                     Spacer(modifier = Modifier.width(spacing16))
                     Column(modifier = Modifier.fillMaxWidth()) {
@@ -127,7 +141,7 @@ fun StandingScreen(
             }
             HorizontalPager(state = pagerState,
                 modifier = Modifier.wrapContentHeight(),
-                verticalAlignment = Alignment.Top) { page ->
+                verticalAlignment = Alignment.Top,) { page ->
                 when (page){
                     0 -> Overview()
                     1 -> Matches()
@@ -139,23 +153,14 @@ fun StandingScreen(
 
         }
     }
-    if (matchesGoals.error.isNotBlank()) {
-        Text(
-            text = matchesGoals.error,
-            color = MaterialTheme.colors.error,
-            textAlign = TextAlign.Center,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 20.dp)
-        )
-    }
-    if (matchesGoals.isLoading) {
-        CircularProgressIndicator(
-            color = colorResource(
-                id = R.color.purple
-            )
-        )
-    }
+
+//    if (matchesGoals.isLoading) {
+//        CircularProgressIndicator(
+//            color = colorResource(
+//                id = R.color.purple
+//            )
+//        )
+//    }
 }
 
 

@@ -1,14 +1,10 @@
-package domain.retrofit.interceptors
+package com.example.livescoreuser.di.interceptors
 
-import com.example.livescoresdu.BuildConfig
 
-import ffinbank.utils.state.UiStatus
-import ffinbank.utils.state.UiStatusListener
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import okhttp3.*
-import org.json.JSONObject
 import java.net.HttpURLConnection.HTTP_UNAUTHORIZED
 
 class AuthInterceptor : Interceptor {

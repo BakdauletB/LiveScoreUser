@@ -15,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import com.example.livescoreuser.R
 
 import ffinbank.myfreedom.uilibrary.values.*
 
@@ -61,7 +62,7 @@ fun CollapsableContainer(
                 modifier = Modifier.weight(1f)
             )
             Icon(
-                painter = painterResource(id = com.example.livescoresdu.R.drawable.ic_drop_down),
+                painter = painterResource(id = R.drawable.ic_drop_down),
                 contentDescription = null,
                 tint = Base700,
                 modifier = Modifier

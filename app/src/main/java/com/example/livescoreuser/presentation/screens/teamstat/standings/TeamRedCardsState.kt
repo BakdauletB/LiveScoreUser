@@ -1,6 +1,6 @@
 package com.example.livescore.presentation.screens.standings
 
-import com.example.livescore.data.remote.dto.TeamStatisticsGoalsResponse
+import com.example.livescoresdu.data.response.TeamStatisticsGoalsResponse
 
 data class TeamRedCardsState(
     val isLoading: Boolean = false,

@@ -1,22 +1,20 @@
-package com.example.livescoresdu.di
+ package com.example.livescoresdu.di
 
 import com.chuckerteam.chucker.api.ChuckerCollector
 import com.chuckerteam.chucker.api.ChuckerInterceptor
-import com.example.livescoresdu.BuildConfig
 import com.example.livescoresdu.uilibrary.values.Constants
 import com.google.gson.GsonBuilder
-import domain.retrofit.interceptors.AuthInterceptor
+import com.example.livescoreuser.di.interceptors.AuthInterceptor
 import domain.retrofit.interceptors.ExceptionInterceptor
 import domain.retrofit.interceptors.LogInterceptor
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.dsl.module
 import retrofit2.Retrofit
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.converter.scalars.ScalarsConverterFactory
 
 
-internal val gsonInstanceModule = module {
+ internal val gsonInstanceModule = module {
     single { GsonBuilder().setLenient().create() }
 }
 internal val enumConverterInstanceModule = module {

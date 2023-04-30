@@ -10,6 +10,7 @@ import androidx.compose.material.Divider
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -25,6 +26,9 @@ import com.example.livescore.presentation.screens.teamstat.TeamGoals
 import com.example.livescore.presentation.screens.teamstat.TeamRedCards
 import com.example.livescore.presentation.screens.teamstat.TeamYellowCards
 import com.example.livescore.util.*
+import com.example.livescoresdu.data.response.PlayerGoalsResponse
+import com.example.livescoresdu.data.response.PointsResponse
+import com.example.livescoresdu.data.response.TeamStatisticsGoalsResponse
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
@@ -32,7 +36,7 @@ import ffinbank.myfreedom.uilibrary.values.*
 
 @OptIn(ExperimentalPagerApi::class, ExperimentalMaterialApi::class)
 @Composable
-fun PlayerStats(players: PlayersGoalsState,assistsGoalState: AssistsGoalState,redCardState: RedCardState,yellowCardState: YellowCardState){
+fun PlayerStats(players: SnapshotStateList<PlayerGoalsResponse>, assistsGoalState: SnapshotStateList<PlayerGoalsResponse>, redCardState: SnapshotStateList<PlayerGoalsResponse>, yellowCardState: SnapshotStateList<PlayerGoalsResponse>){
     val pagerState = rememberPagerState(5)
 
     Column(modifier = Modifier.padding(bottom = spacing36)) {
@@ -48,7 +52,7 @@ fun PlayerStats(players: PlayersGoalsState,assistsGoalState: AssistsGoalState,re
                     endPadding = spacing16
                 )
             }
-            HorizontalPager(state = pagerState) { page ->
+            HorizontalPager(state = pagerState, ) { page ->
                 when(page){
                     0 -> All(
                         players = players,
@@ -66,7 +70,7 @@ fun PlayerStats(players: PlayersGoalsState,assistsGoalState: AssistsGoalState,re
 }
 
 @Composable
-fun Table(points: PointsListState){
+fun Table(points: SnapshotStateList<PointsResponse>){
     Column(modifier = Modifier
         .fillMaxWidth()
         .padding(start = spacing16, end = spacing16)
@@ -134,7 +138,7 @@ fun Table(points: PointsListState){
 //            PointsListItem(pointsResponse = standings)
 //            }
 //        }
-        points.points.forEachIndexed { index,point ->
+        points.forEachIndexed { index,point ->
             PointsListItem(pointsResponse = point, count = index+1)
         }
     }
@@ -154,7 +158,7 @@ Column() {
 }
 @OptIn(ExperimentalPagerApi::class)
 @Composable
-fun TeamStats(matchesGoals: StandingsListState,teamYellowCardsState: TeamYellowCardsState,teamRedCardsState: TeamRedCardsState){
+fun TeamStats(matchesGoals: SnapshotStateList<TeamStatisticsGoalsResponse>,teamYellowCardsState: SnapshotStateList<TeamStatisticsGoalsResponse>,teamRedCardsState: SnapshotStateList<TeamStatisticsGoalsResponse>){
     val pagerState = rememberPagerState(3)
 
     Column(modifier = Modifier.padding(spacing16)) {
@@ -171,7 +175,7 @@ fun TeamStats(matchesGoals: StandingsListState,teamYellowCardsState: TeamYellowC
             )
         }
         Spacer(modifier = Modifier.height(spacing16))
-        HorizontalPager(state = pagerState) { page ->
+        HorizontalPager(state = pagerState, ) { page ->
             when(page){
                 0 -> TeamGoals(matchesGoals = matchesGoals)
                 1 -> TeamRedCards(teamRedCardsState)

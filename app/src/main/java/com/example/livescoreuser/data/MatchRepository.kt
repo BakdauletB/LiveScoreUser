@@ -3,6 +3,7 @@ package com.example.livescoresdu.data
 import com.example.livescoresdu.data.request.*
 import com.example.livescoresdu.data.response.*
 import com.example.livescoresdu.uilibrary.values.Event
+import com.example.livescoreuser.data.response.GetNewDateResponse
 import kotlinx.coroutines.flow.Flow
 import java.io.File
 
@@ -34,5 +35,8 @@ interface MatchRepository {
     suspend fun auth(body:AuthRequest): Flow<Event<AuthResponse>>
     suspend fun uploadFile(file: File): Flow<Event<Any>>
     suspend fun getTeamAndPlayers():Flow<Event<List<TeamAndPlayersResponse>>>
+
+    suspend fun getNewGameDate(date:String): Flow<Event<List<GetNewDateResponse>>>
+    suspend fun getGameLive(): Flow<Event<List<GetNewDateResponse>>>
 
 }

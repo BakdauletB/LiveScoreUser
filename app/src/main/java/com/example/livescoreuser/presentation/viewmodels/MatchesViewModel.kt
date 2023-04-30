@@ -12,6 +12,7 @@ import com.example.livescoresdu.data.request.GameRequest
 import com.example.livescoresdu.data.response.*
 import com.example.livescoresdu.uilibrary.values.SharedPreferencesHelper
 import com.example.livescoresdu.uilibrary.values.Status
+import com.example.livescoreuser.data.response.GetNewDateResponse
 import ffinbank.utils.state.UiStatus
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -23,11 +24,11 @@ class MatchesViewModel(private val repository: MatchRepository
 ) : ViewModel() {
 
 
-    val game: SnapshotStateList<GameDateResponse> = mutableStateListOf()
-    val game1: SnapshotStateList<GameDateResponse> = mutableStateListOf()
-    val game2: SnapshotStateList<GameDateResponse> = mutableStateListOf()
-    val game3: SnapshotStateList<GameDateResponse> = mutableStateListOf()
-    val game4: SnapshotStateList<GameDateResponse> = mutableStateListOf()
+    val newDate: SnapshotStateList<GetNewDateResponse> = mutableStateListOf()
+    val gameLive: SnapshotStateList<GetNewDateResponse> = mutableStateListOf()
+    var newGameState by mutableStateOf(UiStatus.WAITING)
+    var liveGameState by mutableStateOf(UiStatus.WAITING)
+    var selectDate: MutableState<String> = mutableStateOf("")
 
 
     val documents: SnapshotStateList<File> = mutableStateListOf()
@@ -88,101 +89,41 @@ class MatchesViewModel(private val repository: MatchRepository
 //        incomePeriods.add(RewardPeriodModel(Periods.SELECT_PERIOD))
         incomePeriods.last().setSelectedDate(date = dateFrom )
     }
-    fun loadMatches(){
+    fun loadNewDate(date: String){
         viewModelScope.launch(Dispatchers.IO) {
-            repository.getGameDate("2023-04-03").collect {
+            repository.getNewGameDate(date).collect {
                 when (it.status) {
                     Status.SUCCESS -> {
-                        val result = it.data as List<GameDateResponse>
-                        game.clear()
-                        game.addAll(result)
-                        gameState = UiStatus.SUCCESS
+                        val result = it.data as List<GetNewDateResponse>
+                        newDate.clear()
+                        newDate.addAll(result)
+                        newGameState = UiStatus.SUCCESS
                     }
                     Status.ERROR -> {
-                        gameState = UiStatus.ERROR
+                        newGameState = UiStatus.ERROR
                     }
                     Status.LOADING -> {
-                        gameState = UiStatus.LOADING
+                        newGameState = UiStatus.LOADING
                     }
                 }
             }
         }
     }
-    fun loadMatches1(){
+    fun loadGameLive(){
         viewModelScope.launch(Dispatchers.IO) {
-            repository.getGameDate("2023-04-04").collect {
+            repository.getGameLive().collect {
                 when (it.status) {
                     Status.SUCCESS -> {
-                        val result = it.data as List<GameDateResponse>
-                        game1.clear()
-                        game1.addAll(result)
-                        gameState1 = UiStatus.SUCCESS
+                        val result = it.data as List<GetNewDateResponse>
+                        gameLive.clear()
+                        gameLive.addAll(result)
+                        liveGameState = UiStatus.SUCCESS
                     }
                     Status.ERROR -> {
-                        gameState1 = UiStatus.ERROR
+                        liveGameState = UiStatus.ERROR
                     }
                     Status.LOADING -> {
-                        gameState1 = UiStatus.LOADING
-                    }
-                }
-            }
-        }
-    }
-    fun loadMatches2(){
-        viewModelScope.launch(Dispatchers.IO) {
-            repository.getGameDate("2023-04-05").collect {
-                when (it.status) {
-                    Status.SUCCESS -> {
-                        val result = it.data as List<GameDateResponse>
-                        game2.clear()
-                        game2.addAll(result)
-                        gameState2 = UiStatus.SUCCESS
-                    }
-                    Status.ERROR -> {
-                        gameState2 = UiStatus.ERROR
-                    }
-                    Status.LOADING -> {
-                        gameState2 = UiStatus.LOADING
-                    }
-                }
-            }
-        }
-    }
-    fun loadMatches3(){
-        viewModelScope.launch(Dispatchers.IO) {
-            repository.getGameDate("2023-04-06").collect {
-                when (it.status) {
-                    Status.SUCCESS -> {
-                        val result = it.data as List<GameDateResponse>
-                        game3.clear()
-                        game3.addAll(result)
-                        gameState2 = UiStatus.SUCCESS
-                    }
-                    Status.ERROR -> {
-                        gameState2 = UiStatus.ERROR
-                    }
-                    Status.LOADING -> {
-                        gameState2 = UiStatus.LOADING
-                    }
-                }
-            }
-        }
-    }
-    fun loadMatches4(){
-        viewModelScope.launch(Dispatchers.IO) {
-            repository.getGameDate("2023-04-07").collect {
-                when (it.status) {
-                    Status.SUCCESS -> {
-                        val result = it.data as List<GameDateResponse>
-                        game4.clear()
-                        game4.addAll(result)
-                        gameState4 = UiStatus.SUCCESS
-                    }
-                    Status.ERROR -> {
-                        gameState2 = UiStatus.ERROR
-                    }
-                    Status.LOADING -> {
-                        gameState2 = UiStatus.LOADING
+                        liveGameState = UiStatus.LOADING
                     }
                 }
             }
@@ -191,17 +132,9 @@ class MatchesViewModel(private val repository: MatchRepository
     fun refresh() {
         refreshing = true
         team.clear()
-        game.clear()
-            game1.clear()
-        game2.clear()
+
         team.clear()
-        tournament.clear()
-        group.clear()
-        loadMatches()
-        loadMatches1()
-        loadMatches2()
-        loadMatches3()
-        loadMatches4()
+
     }
     fun stopRefreshing(){
         refreshing = false

@@ -15,6 +15,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import com.example.livescoreuser.R
 import ffinbank.myfreedom.uilibrary.values.*
 
 @Composable
@@ -74,7 +75,7 @@ fun DropDownText(
         Spacer(modifier = Modifier.width(spacing8))
 
         Icon(
-            painter = painterResource(id = com.example.livescoresdu.R.drawable.ic_drop_down),
+            painter = painterResource(id = R.drawable.ic_drop_down),
             contentDescription = null,
             modifier = Modifier
                 .height(dropdownHeight)

@@ -3,6 +3,7 @@ package com.example.livescoresdu.data
 import com.example.livescoresdu.data.request.*
 import com.example.livescoresdu.data.response.*
 import com.example.livescoresdu.uilibrary.values.Constants
+import com.example.livescoreuser.data.response.GetNewDateResponse
 import okhttp3.MultipartBody
 import retrofit2.Response
 import retrofit2.http.*
@@ -11,39 +12,39 @@ interface MatchService {
 
     @GET(Constants.GET_GOALS)
     suspend fun getGoals(
-        @Query("groupId") groupId:Int
+        @Query("tournament_id") groupId:Int
     ):Response<List<TeamStatisticsGoalsResponse>>
     @GET(Constants.GET_RED_CARDS)
     suspend fun getTeamRedCards(
-        @Query("groupId") groupId:Int
+        @Query("tournament_id") groupId:Int
     ): Response<List<TeamStatisticsGoalsResponse>>
     @GET(Constants.GET_YELLOW_CARDS)
     suspend fun getTeamYellowCards(
-        @Query("groupId")groupId:Int
+        @Query("tournament_id")groupId:Int
     ): Response<List<TeamStatisticsGoalsResponse>>
 
     @GET(Constants.GET_POINTS)
     suspend fun getPoints(
-        @Query("groupId") groupId:Int
+        @Query("tournament_id") groupId:Int
     ): Response<List<PointsResponse>>
 
 
 
     @GET(Constants.GET_PLAYER_GOALS)
     suspend fun getPlayerGoals(
-        @Query("groupId") groupId:Int
+        @Query("tournament_id") groupId:Int
     ): Response<List<PlayerGoalsResponse>>
     @GET(Constants.GET_PLAYER_ASSISTS)
     suspend fun getAssists(
-        @Query("groupId") groupId:Int
+        @Query("tournament_id") groupId:Int
     ): Response<List<PlayerGoalsResponse>>
     @GET(Constants.GET_PLAYER_RED_CARD)
     suspend fun getRedCards(
-        @Query("groupId") groupId:Int
+        @Query("tournament_id") groupId:Int
     ): Response<List<PlayerGoalsResponse>>
     @GET(Constants.GET_PLAYER_YELLOW_CARD)
     suspend fun getYellowCards(
-        @Query("groupId") groupId:Int
+        @Query("tournament_id") groupId:Int
     ): Response<List<PlayerGoalsResponse>>
 
 
@@ -129,6 +130,14 @@ interface MatchService {
     @GET(Constants.TEAM_AND_ITS_PLAYERS)
     suspend fun getTeamAndPlayers(
     ): Response<List<TeamAndPlayersResponse>>
+
+    @GET(Constants.GET_GAME_NEW_DATE)
+    suspend fun getGameNewDate(
+        @Query("date") date: String
+    ): Response<List<GetNewDateResponse>>
+    @GET(Constants.GET_GAME_LIVE)
+    suspend fun getGameLive(
+    ):  Response<List<GetNewDateResponse>>
 
 
 

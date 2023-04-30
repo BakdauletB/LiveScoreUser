@@ -24,7 +24,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
-import com.example.livescoresdu.R
 import com.example.livescoresdu.data.response.Players
 import com.example.livescoresdu.data.response.TeamAndPlayersResponse
 import com.example.livescoresdu.presentation.viewmodels.ProfileViewModel
@@ -58,7 +57,7 @@ fun ProfileScreen(
             state = pullRefreshState,
             enabled = !viewModel.refreshing
         )
-            .background(color = colorResource(id = R.color.black))
+            .background(color = colorResource(id = com.example.livescoreuser.R.color.black))
     ) {
         Column(
             modifier = Modifier
@@ -71,7 +70,7 @@ fun ProfileScreen(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Icon(
-                    painter = painterResource(id = R.drawable.ic_back_arrow),
+                    painter = painterResource( com.example.livescoreuser.R.drawable.ic_back_arrow),
                     contentDescription = null,
                     tint = Base700,)
             }

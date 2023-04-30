@@ -4,10 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -21,11 +18,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.example.livescore.util.*
 import com.example.livescoreuser.presentation.viewmodels.ScorersViewModel
 import ffinbank.myfreedom.uilibrary.values.*
 import org.koin.androidx.compose.getViewModel
@@ -214,18 +209,7 @@ fun ScorersScreen(navController: NavController,
             }
         }
     }
-    if(alert.value){
-        CustomAlertDialog(title = "sfsd", description = "",positiveButtonColor = Red500,
-        positiveButtonClick = {
 
-        }, positiveButtonText = "",
-        negativeButtonClick = {
-
-        }, negativeButtonText = ""){
-            navController.popBackStack()
-            navController.popBackStack()
-        }
-    }
 
 }
 

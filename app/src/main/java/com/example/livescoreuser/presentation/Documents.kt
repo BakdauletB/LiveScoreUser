@@ -26,9 +26,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.example.livescoresdu.R
 import com.example.livescoresdu.uilibrary.values.CustomButton
 import com.example.livescoresdu.uilibrary.values.click
+import com.example.livescoreuser.R
 import ffinbank.myfreedom.uilibrary.values.*
 import java.io.File
 import java.math.BigDecimal

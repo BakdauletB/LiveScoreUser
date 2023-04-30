@@ -3,7 +3,7 @@ package com.example.livescoresdu.uilibrary.values
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
-import com.example.livescoresdu.presentation.screens.admin.MatchDetailAdminScreen
+import com.example.livescore.presentation.screens.standings.components.StandingScreen
 import com.example.livescoresdu.presentation.screens.detail.MatchesDetailScreen
 import com.example.livescoresdu.dateutils.Calendar
 import com.example.livescoresdu.presentation.screens.MatchesScreen
@@ -20,7 +20,6 @@ fun NavGraphBuilder.homeGraph(navController: NavController,bottomNavHide: (Boole
 //        )
 //    }
     composable(route = HomeDestinations.MATCH_DETAIL + "/{id}") {
-
         MatchesDetailScreen(
             navController = navController,
             onBackClick = {
@@ -35,14 +34,12 @@ fun NavGraphBuilder.homeGraph(navController: NavController,bottomNavHide: (Boole
             navController.popBackStack()
         })
     }
-    composable(route = HomeDestinations.MATCH_DETAIL_ADMIN + "/{id}"){
-        MatchDetailAdminScreen(
-            navController = navController,
-            onBackClick = {
-                navController.popBackStack()
-            }
-        )
+    composable(route = HomeDestinations.STANDING){
+        StandingScreen(onBackClick = {
+            navController.popBackStack()
+        })
     }
+
 //    composable(route = CardDestinations.CARD_REQUISITES) {
 //        //val card = navController.previousBackStackEntry?.savedStateHandle?.get<CardModel>("card")
 ////        val card =

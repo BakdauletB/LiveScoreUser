@@ -32,6 +32,7 @@ import com.example.livescoresdu.presentation.viewmodels.MatchesDetailViewModel
 import com.example.livescoresdu.uilibrary.values.CustomButton
 import com.example.livescoresdu.uilibrary.values.CustomButtonText
 import com.example.livescoresdu.uilibrary.values.HomeDestinations
+import com.example.livescoreuser.R
 import ffinbank.myfreedom.uilibrary.values.*
 import org.koin.androidx.compose.getViewModel
 
@@ -54,7 +55,7 @@ fun MatchesDetailScreen(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(color = colorResource(id = com.example.livescoresdu.R.color.black))
+            .background(color = colorResource(id = R.color.black))
     ) {
         Column(
             modifier = Modifier
@@ -63,7 +64,7 @@ fun MatchesDetailScreen(
 
             Spacer(modifier = Modifier.windowInsetsTopHeight(WindowInsets.statusBars))
             Icon(
-                painter = painterResource(id = com.example.livescoresdu.R.drawable.ic_back_arrow),
+                painter = painterResource(id = R.drawable.ic_back_arrow),
                 contentDescription = null,
                 tint = Base700,
                 modifier = Modifier

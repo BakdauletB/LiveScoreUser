@@ -7,6 +7,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -15,10 +16,11 @@ import androidx.compose.ui.unit.dp
 import com.example.livescore.presentation.screens.scorers.components.GoalListItem
 import com.example.livescore.presentation.screens.standings.StandingsListState
 import com.example.livescore.util.*
+import com.example.livescoresdu.data.response.TeamStatisticsGoalsResponse
 import ffinbank.myfreedom.uilibrary.values.*
 
 @Composable
-fun TeamGoals(matchesGoals: StandingsListState){
+fun TeamGoals(matchesGoals: SnapshotStateList<TeamStatisticsGoalsResponse>){
     LazyColumn {
         item {
             Row(modifier = Modifier.fillMaxWidth()) {
@@ -55,7 +57,7 @@ fun TeamGoals(matchesGoals: StandingsListState){
                 )
                 .clip(RoundedCornerShape(spacing12))
             ){
-                matchesGoals.standings.forEachIndexed {index,team ->
+                matchesGoals.forEachIndexed {index,team ->
                     GoalListItem(team = team, count = index+1)
                 }
             }

@@ -13,6 +13,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import com.example.livescoresdu.data.response.Events
 import com.example.livescoresdu.presentation.screens.bundle.EventId
+import com.example.livescoreuser.R
 import ffinbank.myfreedom.uilibrary.values.*
 import org.koin.androidx.compose.getViewModel
 
@@ -20,7 +21,6 @@ import org.koin.androidx.compose.getViewModel
 fun MatchDetailItem(events: Events,
                     alertUpdatePlayer: MutableState<Boolean>,
                     alertUpdateYellow: MutableState<Boolean>,
-                    viewModel: MatchDetailAdminViewModel = getViewModel()
 ){
     if (events.eventName == "GOAL" || events.eventName == "YELLOW_CARD" || events.eventName == "RED_CARD") {
         Column(modifier = Modifier.fillMaxWidth()) {
@@ -45,7 +45,7 @@ fun MatchDetailItem(events: Events,
 //                                Spacer(modifier = Modifier.width(spacing6))
                                     Spacer(modifier = Modifier.weight(1f))
                                     Image(
-                                        painter = painterResource(id = com.example.livescoresdu.R.drawable.ball),
+                                        painter = painterResource(id = com.example.livescoreuser.R.drawable.ball),
                                         contentDescription = null,
                                         modifier = Modifier.size(spacing14)
                                     )
@@ -77,7 +77,7 @@ fun MatchDetailItem(events: Events,
                         Spacer(modifier = Modifier.height(spacing16))
                         if (events.eventName == "YELLOW_CARD") {
                             Image(
-                                painter = painterResource(id = com.example.livescoresdu.R.drawable.yellowcard),
+                                painter = painterResource(id = R.drawable.yellowcard),
                                 contentDescription = null,
                                 modifier = Modifier.size(spacing14)
                             )
@@ -91,7 +91,7 @@ fun MatchDetailItem(events: Events,
                         Spacer(modifier = Modifier.height(spacing16))
                         if (events.eventName == "RED_CARD") {
                             Image(
-                                painter = painterResource(id = com.example.livescoresdu.R.drawable.red_card),
+                                painter = painterResource(id = R.drawable.red_card),
                                 contentDescription = null,
                                 modifier = Modifier.size(spacing14)
                             )
@@ -114,7 +114,7 @@ fun MatchDetailItem(events: Events,
                             if (events.eventName == "GOAL") {
                                 Row(verticalAlignment = Alignment.CenterVertically) {
                                     Image(
-                                        painter = painterResource(id = com.example.livescoresdu.R.drawable.ball),
+                                        painter = painterResource(id = R.drawable.ball),
                                         contentDescription = null,
                                         modifier = Modifier.size(spacing14)
                                     )
@@ -131,7 +131,7 @@ fun MatchDetailItem(events: Events,
                         Spacer(modifier = Modifier.height(spacing16))
                         if (events.eventName == "RED_CARD") {
                             Image(
-                                painter = painterResource(id = com.example.livescoresdu.R.drawable.red_card),
+                                painter = painterResource(id = R.drawable.red_card),
                                 contentDescription = null,
                                 modifier = Modifier.size(spacing14)
                             )
@@ -145,7 +145,7 @@ fun MatchDetailItem(events: Events,
                         Spacer(modifier = Modifier.height(spacing16))
                         if (events.eventName == "YELLOW_CARD") {
                             Image(
-                                painter = painterResource(id = com.example.livescoresdu.R.drawable.yellowcard),
+                                painter = painterResource(id = R.drawable.yellowcard),
                                 contentDescription = null,
                                 modifier = Modifier.size(spacing14)
                             )
@@ -158,14 +158,14 @@ fun MatchDetailItem(events: Events,
                         }
                     }
                 }
-                Image(painter = painterResource(id = com.example.livescoresdu.R.drawable.ic_edit),
+                Image(painter = painterResource(id = R.drawable.ic_edit),
                     contentDescription = null,
                     modifier = Modifier
                         .size(spacing14)
                         .clickable {
-                            viewModel.getEventId(events.eventId)
+//                            viewModel.getEventId(events.eventId)
                             EventId.eventId = events.eventId
-                            viewModel.updatePlayers(events.teamId)
+//                            viewModel.updatePlayers(events.teamId)
                             if(events.eventName == "GOAL"){
                                 alertUpdatePlayer.value = true
                             } else if(events.eventName == "YELLOW_CARD"){

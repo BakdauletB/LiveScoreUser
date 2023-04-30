@@ -6,7 +6,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 
-import com.example.livescore.presentation.screens.matchdetails.MatchDetailsState
 import com.example.livescore.util.Resource
 import com.example.livescoresdu.data.MatchRepository
 import com.example.livescoresdu.data.response.GameStartResponse

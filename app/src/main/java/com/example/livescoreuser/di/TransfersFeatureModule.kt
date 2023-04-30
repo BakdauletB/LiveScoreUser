@@ -2,6 +2,7 @@ package com.example.livescoresdu.di
 
 
 import com.example.livescoresdu.presentation.viewmodels.*
+import com.example.livescoreuser.presentation.screens.teamstat.standings.components.StandingsViewModel
 import com.fvalela.calendarjetpackcompose.sample.viewmodel.CalendarViewModel
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -12,10 +13,11 @@ internal val transfersFeatureModule = module {
 
     viewModel { MatchesViewModel(repository = get()) }
     viewModel { MatchesDetailViewModel(repository = get()) }
-    viewModel { MatchDetailAdminViewModel(repository = get()) }
+//    viewModel { MatchDetailAdminViewModel(repository = get()) }
     viewModel { CalendarViewModel() }
     viewModel { AuthViewModel(get())}
     viewModel { FavorutiesViewModel(get())}
     viewModel { ProfileViewModel(get()) }
+    viewModel { StandingsViewModel(get()) }
 
 }

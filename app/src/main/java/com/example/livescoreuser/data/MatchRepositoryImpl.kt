@@ -8,6 +8,7 @@ import com.example.livescoresdu.di.isSuccessfulAndBodyIsNotNull
 import com.example.livescoresdu.presentation.screens.bundle.TokenBundle
 import com.example.livescoresdu.uilibrary.values.Event
 import com.example.livescoresdu.uilibrary.values.SharedPreferencesHelper
+import com.example.livescoreuser.data.response.GetNewDateResponse
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -330,6 +331,30 @@ class MatchRepositoryImpl(private val dataSource: MatchService): MatchRepository
         emit(Event.loading())
 
         val response = dataSource.getTeamAndPlayers()
+        if (response.isSuccessfulAndBodyIsNotNull()) {
+            emit(Event.success(response.body()))
+            return@flow
+        }
+
+        val errorMessage = withContext(Dispatchers.IO) { response.errorBody()?.string() }
+        emit(Event.error(errorMessage))
+    }
+    override suspend fun getNewGameDate(date:String): Flow<Event<List<GetNewDateResponse>>> = flow {
+        emit(Event.loading())
+
+        val response = dataSource.getGameNewDate(date)
+        if (response.isSuccessfulAndBodyIsNotNull()) {
+            emit(Event.success(response.body()))
+            return@flow
+        }
+
+        val errorMessage = withContext(Dispatchers.IO) { response.errorBody()?.string() }
+        emit(Event.error(errorMessage))
+    }
+    override suspend fun getGameLive(): Flow<Event<List<GetNewDateResponse>>> = flow {
+        emit(Event.loading())
+
+        val response = dataSource.getGameLive()
         if (response.isSuccessfulAndBodyIsNotNull()) {
             emit(Event.success(response.body()))
             return@flow

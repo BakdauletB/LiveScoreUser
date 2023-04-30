@@ -23,6 +23,7 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.example.livescoreuser.R
 import ffinbank.myfreedom.uilibrary.values.*
 
 @OptIn(ExperimentalMaterialApi::class, ExperimentalComposeUiApi::class)
@@ -78,7 +79,7 @@ fun SelectBottomSheet(
                                 .clickable {
                                     onBottomSheetHide()
                                 },
-                            painter = painterResource(id = com.example.livescoresdu.R.drawable.ic_circle_close_transparent),
+                            painter = painterResource(id = R.drawable.ic_circle_close_transparent),
                             contentDescription = "",
                         )
                     }

@@ -13,6 +13,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import com.example.livescoresdu.uilibrary.values.click
+import com.example.livescoreuser.R
 import ffinbank.myfreedom.uilibrary.values.*
 
 @Composable
@@ -70,7 +71,7 @@ private fun TextItem(text: String, selected: Boolean, onClick: () -> Unit) {
             color = if (selected) Green500 else Base800,
             modifier = Modifier.weight(1f)
         )
-        if (selected) Icon(painter = painterResource(id = com.example.livescoresdu.R.drawable.ic_done_small), contentDescription = null, tint = Green500)
+        if (selected) Icon(painter = painterResource(id = R.drawable.ic_done_small), contentDescription = null, tint = Green500)
     }
 }
 

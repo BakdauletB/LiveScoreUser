@@ -121,12 +121,12 @@ fun Calendar(
                             }
                         ) {
                              val date = "${matchesViewModel.selectedDate.value} ${matchesViewModel.selectHour.value}:${matchesViewModel.selectMinutes.value}"
-                            matchesViewModel.postGame(
-                                dateTime = date,
-                                groupId = PostBundle.selectedGroup,
-                                team2Id = PostBundle.selectedAway,
-                                team1Id = PostBundle.selectedHome
-                            )
+//                            matchesViewModel.postGame(
+//                                dateTime = date,
+//                                groupId = PostBundle.selectedGroup,
+//                                team2Id = PostBundle.selectedAway,
+//                                team1Id = PostBundle.selectedHome
+//                            )
                             navController.popBackStack()
 
 

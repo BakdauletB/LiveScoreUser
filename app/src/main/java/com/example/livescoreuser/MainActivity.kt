@@ -16,6 +16,7 @@ import com.example.livescoresdu.uilibrary.values.MainDestinations
 import com.example.livescoresdu.uilibrary.values.SharedPreferencesHelper
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import ffinbank.myfreedom.uilibrary.values.Base100
+import ffinbank.myfreedom.uilibrary.values.Base900
 
 
 class MainActivity : FragmentActivity() {
@@ -39,7 +40,7 @@ fun MainScreen() {
 
     Box(contentAlignment = Alignment.BottomCenter, modifier = Modifier
         .fillMaxSize()
-        .background(Base100)) {
+        .background(Base900)) {
 
         MainNavHost(
             navController = navController,

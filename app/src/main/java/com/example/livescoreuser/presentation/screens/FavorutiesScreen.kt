@@ -5,12 +5,20 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.Surface
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.navigation.NavController
 import com.example.livescoresdu.presentation.Documents
 import com.example.livescoresdu.presentation.screens.bundle.IdBundle
@@ -20,8 +28,15 @@ import com.example.livescoresdu.presentation.viewmodels.swiftFileMimeTypes
 import com.example.livescoresdu.uilibrary.values.CustomButton
 import com.example.livescoresdu.uilibrary.values.CustomButtonText
 import com.example.livescoresdu.uilibrary.values.fromUri
+import com.example.livescoreuser.presentation.viewmodels.WelcomViewModel
+import com.example.livescoreuser.values.ItemList
+import com.example.livescoreuser.values.SearchTextField
+import ffinbank.myfreedom.uilibrary.values.Base50
 import ffinbank.myfreedom.uilibrary.values.Base900
 import ffinbank.myfreedom.uilibrary.values.Orange500
+import ffinbank.myfreedom.uilibrary.values.fontSize16
+import ffinbank.myfreedom.uilibrary.values.fontSize28
+import ffinbank.myfreedom.uilibrary.values.semiBold
 import ffinbank.myfreedom.uilibrary.values.spacing16
 import ffinbank.myfreedom.uilibrary.values.spacing32
 import org.koin.androidx.compose.getViewModel
@@ -30,79 +45,45 @@ import java.io.File
 @Composable
 fun FavorutiesScreen(
     navController: NavController,
-    viewModel: FavorutiesViewModel = getViewModel()
+    viewModel: WelcomViewModel = getViewModel()
 ){
-    val onDocumentClick = remember {
-        mutableStateOf(false)
-    }
-    val context = LocalContext.current
-    val documentPickerLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.GetMultipleContents(),
-        onResult = { result ->
-            try {
-                val files: MutableList<File> = mutableListOf()
-                result.forEach { uri ->
-                    val file = File("").fromUri(context = context, uri = uri)
-                    if (file.readBytes().size <= 10_000_000 && files.size < viewModel.documentsMaxSize) {
-                        files.add(file)
+    val lazyPages = viewModel.getFavs().collectAsState(emptyList())
+    val searchText = remember { mutableStateOf(TextFieldValue("")) }
+    Surface(
+        modifier = Modifier.fillMaxSize(),
+        color = Base900
+    ) {
+        Column(modifier = Modifier.padding(start = spacing16, end = spacing16)) {
+            Text(text = "Favorites",
+                color = Base50,
+                fontSize = fontSize28,
+                fontWeight = FontWeight.SemiBold,
+                style = semiBold
+            )
+            Spacer(modifier = Modifier.height(spacing32))
+            SearchTextField(state = searchText)
+            Spacer(modifier = Modifier.height(spacing16))
+            LazyColumn {
+                items(lazyPages.value.filter { image ->
+                    val text = searchText.value.text
+                    (text.isEmpty() || image.tournamentName.contains(text, ignoreCase = true))
+
+                }) { image ->
+                    val isFavorite = viewModel.isFavorite(image)
+                    ItemList(image, isFavorite,
+                        isFavCallback = { value ->
+                            if (value) {
+                                viewModel.addFavorite(image)
+                            } else {
+                                viewModel.removeFavorite(image)
+                            }
+                        }) {
+//                    navController.navigate("detail/${image.tournamentId}")
                     }
+                    Spacer(modifier = Modifier.height(spacing16))
                 }
-                files.forEach {
-                    if (viewModel.documents.size < viewModel.documentsMaxSize) {
-                        viewModel.documents.add(it)
-                    } else return@forEach
-                }
-            } catch (e: Exception) {
-                Log.e("TAG", "SwiftTransferScreen: $e")
             }
-            onDocumentClick.value = false
         }
-    )
-
-
-    Column(modifier = Modifier.background(color = Base900)) {
-        Spacer(modifier = Modifier.height(spacing32))
-                Documents(
-            documents = viewModel.documents,
-            onOpenBottomSheetClick = {
-//                currentInfo.value =
-//                    viewModel.documentInfo.parseToInfoModel(context = context)
-//                openInfoBottomSheet.value = true
-            },
-            onAddDocumentClick = {
-                //TODO Open documents
-                onDocumentClick.value = true
-
-            },
-            maxSize = viewModel.documentsMaxSize,
-            onDeleteDocumentClick = {
-                viewModel.documents.remove(it)
-                it.delete()
-            }
-        )
-        Spacer(modifier = Modifier.height(spacing16))
-        CustomButton(buttonColors = ButtonDefaults.buttonColors(backgroundColor = Orange500),
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(start = spacing16, end = spacing16),
-            content = {
-                CustomButtonText(
-                    text = "Upload",
-                    color = Base900
-                )
-            }) {
-            viewModel.uploadDocument()
-            navController.popBackStack()
-        }
-    }
-    if (onDocumentClick.value) {
-        Log.e("TAG", "FavorutiesScreen: Baha", )
-        RequestStoragePermission(
-            onPermissionDenied = {},
-            onPermissionGranted = {
-                documentPickerLauncher.launch(swiftFileMimeTypes)
-            }
-        )
     }
 
 }

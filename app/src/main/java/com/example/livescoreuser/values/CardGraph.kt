@@ -7,6 +7,7 @@ import com.example.livescore.presentation.screens.standings.components.StandingS
 import com.example.livescoresdu.presentation.screens.detail.MatchesDetailScreen
 import com.example.livescoresdu.dateutils.Calendar
 import com.example.livescoresdu.presentation.screens.MatchesScreen
+import com.example.livescoresdu.presentation.screens.admin.MatchDetailAdminScreen
 import com.google.accompanist.navigation.animation.composable
 
 
@@ -21,6 +22,14 @@ fun NavGraphBuilder.homeGraph(navController: NavController,bottomNavHide: (Boole
 //    }
     composable(route = HomeDestinations.MATCH_DETAIL + "/{id}") {
         MatchesDetailScreen(
+            navController = navController,
+            onBackClick = {
+                navController.popBackStack()
+            }
+        )
+    }
+    composable(route = HomeDestinations.MATCH_DETAIL_ADMIN + "/{id}"){
+        MatchDetailAdminScreen(
             navController = navController,
             onBackClick = {
                 navController.popBackStack()

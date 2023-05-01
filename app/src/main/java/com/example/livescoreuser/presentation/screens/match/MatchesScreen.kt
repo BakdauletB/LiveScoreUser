@@ -304,7 +304,7 @@ fun ListGame(navController: NavController,
                     newDateResponse.getOrNull(0)?.games?.forEachIndexed { index, newDateResponse ->
                         MatchItem(modifier = Modifier, games = newDateResponse, onClick = {
                             IdBundle.id = newDateResponse.protocolId
-                            navController.navigate(HomeDestinations.MATCH_DETAIL + "/${newDateResponse.protocolId}")
+                            navController.navigate(HomeDestinations.MATCH_DETAIL_ADMIN + "/${newDateResponse.protocolId}")
                         })
                     }
                 }

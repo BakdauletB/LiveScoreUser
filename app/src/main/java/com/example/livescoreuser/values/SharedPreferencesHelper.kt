@@ -2,7 +2,6 @@ package com.example.livescoresdu.uilibrary.values
 
 import android.content.Context
 import android.content.SharedPreferences
-import android.media.MediaCodec.MetricsConstants.MODE
 import android.util.Log
 
 private const val NAME = "name"
@@ -107,7 +106,7 @@ object SharedPreferencesHelper {
         preferences.edit().putBoolean(GEOLOCATION_ENABLED, geolocationEnabled).apply()
     }
 
-    fun saveNotificationEnabled(notificationEnabled: Boolean) {
+    fun saveWelcome(notificationEnabled: Boolean) {
         preferences.edit().putBoolean(NOTIFICATION_ENABLED, notificationEnabled).apply()
     }
 
@@ -160,7 +159,7 @@ object SharedPreferencesHelper {
     fun getPin() = preferences.getString(PIN, null)
     fun getLocale() = preferences.getString(LOCALE, null)
 
-    fun getNotificationEnabled() =
+    fun getWelcome() =
         preferences.getBoolean(NOTIFICATION_ENABLED, false)
 
     fun getFingerprintEnabled() =

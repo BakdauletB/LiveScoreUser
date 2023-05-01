@@ -1,26 +1,33 @@
 package com.example.livescoresdu.data
 
-import android.util.Log
+import androidx.compose.ui.platform.LocalContext
+import androidx.room.Room
+import com.example.livescore.data.local.db.LivescoreDatabase
 import com.example.livescoresdu.data.request.*
 import com.example.livescoresdu.data.response.*
 import com.example.livescoresdu.di.errorMessage
 import com.example.livescoresdu.di.isSuccessfulAndBodyIsNotNull
 import com.example.livescoresdu.presentation.screens.bundle.TokenBundle
 import com.example.livescoresdu.uilibrary.values.Event
-import com.example.livescoresdu.uilibrary.values.SharedPreferencesHelper
 import com.example.livescoreuser.data.response.GetNewDateResponse
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.withContext
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import java.io.File
 
-class MatchRepositoryImpl(private val dataSource: MatchService): MatchRepository {
-
+class MatchRepositoryImpl(private val dataSource: MatchService,
+                          private val livescoreDatabase: LivescoreDatabase
+                            ): MatchRepository {
     private lateinit var access: String
+
 
 
     override suspend fun getGoals(): Flow<Event<List<TeamStatisticsGoalsResponse>>> = flow {
@@ -362,6 +369,21 @@ class MatchRepositoryImpl(private val dataSource: MatchService): MatchRepository
 
         val errorMessage = withContext(Dispatchers.IO) { response.errorBody()?.string() }
         emit(Event.error(errorMessage))
+    }
+    fun observeFavs(coroutineScope: CoroutineScope) = livescoreDatabase
+        .TournemntDao()
+        .observeFavsChanges()
+        .distinctUntilChanged()
+        .shareIn(coroutineScope, started = SharingStarted.Eagerly)
+
+//    suspend fun getImage(imageId: String) = api.getImage(imageId)
+
+    suspend fun addFavorite(imageRoot: TournamentUserResponse) = withContext(Dispatchers.IO) {
+        livescoreDatabase.TournemntDao().addFav(imageRoot)
+    }
+
+    suspend fun removeFavorite(imageRoot: TournamentUserResponse) = withContext(Dispatchers.IO) {
+        livescoreDatabase.TournemntDao().removeFav(imageRoot)
     }
 
 

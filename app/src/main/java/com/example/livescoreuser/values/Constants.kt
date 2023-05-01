@@ -4,7 +4,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.Black
 
 object Constants {
-    const val BASE_URL = "http://192.168.1.16:8081/"
+    const val BASE_URL = "http://192.168.0.105:8081/"
 
     const val API_KEY_TWO = "5854abc0-36b8-11ed-b9f8-af3e9ecb0bee"
 

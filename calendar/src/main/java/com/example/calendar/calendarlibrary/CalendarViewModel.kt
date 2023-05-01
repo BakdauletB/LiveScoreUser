@@ -32,7 +32,7 @@ class CalendarViewModel : ViewModel() {
             if (isExpanded) {
                 dates[1][dates[1].size / 2].yearMonth()
             } else {
-                if (dates[1].count { it.month == dates[1][0].month } > 3)
+                if (dates[1].count { it.month == dates[1][0].month } > 4)
                     dates[1][0].yearMonth()
                 else
                     dates[1][dates[1].size - 1].yearMonth()

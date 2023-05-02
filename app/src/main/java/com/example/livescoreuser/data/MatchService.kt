@@ -4,6 +4,7 @@ import com.example.livescoresdu.data.request.*
 import com.example.livescoresdu.data.response.*
 import com.example.livescoresdu.uilibrary.values.Constants
 import com.example.livescoreuser.data.response.GetNewDateResponse
+import com.example.livescoreuser.data.response.GroupPointsResponse
 import okhttp3.MultipartBody
 import retrofit2.Response
 import retrofit2.http.*
@@ -12,39 +13,44 @@ interface MatchService {
 
     @GET(Constants.GET_GOALS)
     suspend fun getGoals(
-        @Query("tournament_id") groupId:Int
+        @Query("tournament_id") tournamentId:Int
     ):Response<List<TeamStatisticsGoalsResponse>>
     @GET(Constants.GET_RED_CARDS)
     suspend fun getTeamRedCards(
-        @Query("tournament_id") groupId:Int
+        @Query("tournament_id") tournamentId:Int
     ): Response<List<TeamStatisticsGoalsResponse>>
     @GET(Constants.GET_YELLOW_CARDS)
     suspend fun getTeamYellowCards(
-        @Query("tournament_id")groupId:Int
+        @Query("tournament_id")tournamentId:Int
     ): Response<List<TeamStatisticsGoalsResponse>>
 
     @GET(Constants.GET_POINTS)
     suspend fun getPoints(
-        @Query("tournament_id") groupId:Int
+        @Query("tournament_id") tournamentId:Int
     ): Response<List<PointsResponse>>
+    @GET(Constants.GET_GROUP_INFO)
+    suspend fun getGroupPoints(
+        @Query("groupId") groupId: Int,
+        @Query("tournamentId") tournamentId: Int,
+    ):Response<List<GroupPointsResponse>>
 
 
 
     @GET(Constants.GET_PLAYER_GOALS)
     suspend fun getPlayerGoals(
-        @Query("tournament_id") groupId:Int
+        @Query("tournament_id") tournamentId:Int
     ): Response<List<PlayerGoalsResponse>>
     @GET(Constants.GET_PLAYER_ASSISTS)
     suspend fun getAssists(
-        @Query("tournament_id") groupId:Int
+        @Query("tournament_id") tournamentId:Int
     ): Response<List<PlayerGoalsResponse>>
     @GET(Constants.GET_PLAYER_RED_CARD)
     suspend fun getRedCards(
-        @Query("tournament_id") groupId:Int
+        @Query("tournament_id") tournamentId:Int
     ): Response<List<PlayerGoalsResponse>>
     @GET(Constants.GET_PLAYER_YELLOW_CARD)
     suspend fun getYellowCards(
-        @Query("tournament_id") groupId:Int
+        @Query("tournament_id") tournamentId: Int
     ): Response<List<PlayerGoalsResponse>>
 
 

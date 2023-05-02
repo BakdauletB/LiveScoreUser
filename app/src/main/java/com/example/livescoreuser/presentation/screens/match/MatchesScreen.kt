@@ -41,6 +41,7 @@ import com.example.livescoresdu.presentation.viewmodels.swiftFileMimeTypes
 import com.example.livescoresdu.uilibrary.values.*
 import com.example.livescoreuser.R
 import com.example.livescoreuser.data.response.GetNewDateResponse
+import com.example.livescoreuser.presentation.screens.bundle.TournamentBundle
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.rememberPagerState
 import com.mabn.calendarlibrary.ExpandableCalendar
@@ -293,6 +294,8 @@ fun ListGame(navController: NavController,
         Column() {
             newDateResponse.forEach {
                 LeagueItem(newDateResponse = it, onClick = {
+                    TournamentBundle.tournamentId = it.tournamentId
+                    TournamentBundle.groupId = it.groupId
                     navController.navigate(HomeDestinations.STANDING)
                 })
             }

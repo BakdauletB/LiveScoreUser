@@ -62,6 +62,7 @@ object Constants {
     const val TEAM_AND_ITS_PLAYERS = "team/teamAndItsPlayers"
     const val GET_GAME_NEW_DATE = "game/new/date"
     const val GET_GAME_LIVE = "game/live"
+    const val GET_GROUP_INFO = "group_info/group/points"
 
 
 }

@@ -10,6 +10,7 @@ import com.example.livescoresdu.di.isSuccessfulAndBodyIsNotNull
 import com.example.livescoresdu.presentation.screens.bundle.TokenBundle
 import com.example.livescoresdu.uilibrary.values.Event
 import com.example.livescoreuser.data.response.GetNewDateResponse
+import com.example.livescoreuser.data.response.GroupPointsResponse
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -70,6 +71,18 @@ class MatchRepositoryImpl(private val dataSource: MatchService,
         emit(Event.loading())
 
         val response = dataSource.getPoints(1)
+        if (response.isSuccessfulAndBodyIsNotNull()) {
+            emit(Event.success(response.body()))
+            return@flow
+        }
+
+        val errorMessage = withContext(Dispatchers.IO) { response.errorBody()?.string() }
+        emit(Event.error(errorMessage))
+    }
+    override suspend fun getGroupPoints(tournamentId:Int,groupId: Int): Flow<Event<List<GroupPointsResponse>>> = flow {
+        emit(Event.loading())
+
+        val response = dataSource.getGroupPoints(groupId = groupId, tournamentId = tournamentId )
         if (response.isSuccessfulAndBodyIsNotNull()) {
             emit(Event.success(response.body()))
             return@flow

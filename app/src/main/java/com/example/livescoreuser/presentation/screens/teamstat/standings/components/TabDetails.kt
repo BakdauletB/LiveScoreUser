@@ -29,6 +29,7 @@ import com.example.livescore.util.*
 import com.example.livescoresdu.data.response.PlayerGoalsResponse
 import com.example.livescoresdu.data.response.PointsResponse
 import com.example.livescoresdu.data.response.TeamStatisticsGoalsResponse
+import com.example.livescoreuser.data.response.GroupPointsResponse
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
@@ -70,7 +71,7 @@ fun PlayerStats(players: SnapshotStateList<PlayerGoalsResponse>, assistsGoalStat
 }
 
 @Composable
-fun Table(points: SnapshotStateList<PointsResponse>){
+fun Table(points: SnapshotStateList<GroupPointsResponse>){
     Column(modifier = Modifier
         .fillMaxWidth()
         .padding(start = spacing16, end = spacing16)
@@ -138,9 +139,14 @@ fun Table(points: SnapshotStateList<PointsResponse>){
 //            PointsListItem(pointsResponse = standings)
 //            }
 //        }
-        points.forEachIndexed { index,point ->
-            PointsListItem(pointsResponse = point, count = index+1)
+        LazyColumn(){
+            item {
+                points.getOrNull(0)?.sortedByPointTeams?.forEachIndexed { index,point ->
+                    PointsListItem(pointsResponse = point, count = index+1)
+                }
+            }
         }
+
     }
 
 }

@@ -9,6 +9,8 @@ import com.example.livescoresdu.data.response.PlayerGoalsResponse
 import com.example.livescoresdu.data.response.PointsResponse
 import com.example.livescoresdu.data.response.TeamStatisticsGoalsResponse
 import com.example.livescoresdu.uilibrary.values.Status
+import com.example.livescoreuser.data.response.GroupPointsResponse
+import com.example.livescoreuser.presentation.screens.bundle.TournamentBundle
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -18,6 +20,7 @@ class StandingsViewModel(private val repository: MatchRepository): ViewModel() {
     val teamRedCards: SnapshotStateList<TeamStatisticsGoalsResponse> = mutableStateListOf()
     val teamYellowCards: SnapshotStateList<TeamStatisticsGoalsResponse> = mutableStateListOf()
     val points: SnapshotStateList<PointsResponse> = mutableStateListOf()
+    val groupPoints: SnapshotStateList<GroupPointsResponse> = mutableStateListOf()
     val playerGoals: SnapshotStateList<PlayerGoalsResponse> = mutableStateListOf()
     val assists: SnapshotStateList<PlayerGoalsResponse> = mutableStateListOf()
     val redCards: SnapshotStateList<PlayerGoalsResponse> = mutableStateListOf()
@@ -87,18 +90,39 @@ class StandingsViewModel(private val repository: MatchRepository): ViewModel() {
             }
         }
     }
-    fun getPoints(){
-        if (points.isEmpty()) {
+//    fun getPoints(){
+//        if (points.isEmpty()) {
+//            viewModelScope.launch(Dispatchers.IO) {
+//                repository.getPoints().collect {
+//                    when (it.status) {
+//                        Status.LOADING -> {
+//
+//                        }
+//                        Status.SUCCESS -> {
+//                            val result = it.data as List<PointsResponse>
+//                            points.clear()
+//                            points.addAll(result)
+//                        }
+//                        Status.ERROR -> {
+//
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//    }
+    fun getGroupPoints(){
+        if (groupPoints.isEmpty()) {
             viewModelScope.launch(Dispatchers.IO) {
-                repository.getPoints().collect {
+                repository.getGroupPoints(tournamentId = TournamentBundle.tournamentId,TournamentBundle.groupId).collect {
                     when (it.status) {
                         Status.LOADING -> {
 
                         }
                         Status.SUCCESS -> {
-                            val result = it.data as List<PointsResponse>
-                            points.clear()
-                            points.addAll(result)
+                            val result = it.data as List<GroupPointsResponse>
+                            groupPoints.clear()
+                            groupPoints.addAll(result)
                         }
                         Status.ERROR -> {
 

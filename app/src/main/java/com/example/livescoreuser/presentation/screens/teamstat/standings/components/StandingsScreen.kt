@@ -48,7 +48,7 @@ fun StandingScreen(
     val scope = rememberCoroutineScope()
 
     val matchesGoals = viewModel.goals
-    val points = viewModel.points
+    val points = viewModel.groupPoints
     val playersGoals = viewModel.playerGoals
     val assists = viewModel.assists
     val redCards = viewModel.redCards
@@ -58,7 +58,8 @@ fun StandingScreen(
     LaunchedEffect(key1 = scope){
         viewModel.getAssists()
         viewModel.getGoals()
-        viewModel.getPoints()
+//        viewModel.getPoints()
+        viewModel.getGroupPoints()
         viewModel.getPlayerGoals()
         viewModel.getRedCards()
         viewModel.getYellowCards()

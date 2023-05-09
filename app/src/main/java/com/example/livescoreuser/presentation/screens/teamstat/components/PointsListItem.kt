@@ -9,6 +9,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import coil.compose.rememberAsyncImagePainter
 import com.example.livescoresdu.data.response.PointsResponse
 import ffinbank.myfreedom.uilibrary.values.*
 
@@ -27,7 +28,7 @@ fun PointsListItem(pointsResponse: PointsResponse, count: Int){
             )
             Spacer(modifier = Modifier.width(spacing6))
             Image(
-                painter = painterResource(id = com.example.livescoreuser.R.drawable.barabar),
+                painter = rememberAsyncImagePainter(model = pointsResponse.teamLogo),
                 contentDescription = "Team logo",
                 modifier = Modifier
                     .size(spacing32)

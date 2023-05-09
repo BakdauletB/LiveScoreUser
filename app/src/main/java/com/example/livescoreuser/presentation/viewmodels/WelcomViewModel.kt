@@ -9,6 +9,7 @@ import com.example.livescoresdu.data.MatchRepositoryImpl
 import com.example.livescoresdu.data.response.TournamentUserResponse
 import com.example.livescoresdu.uilibrary.values.Status
 import com.example.livescoreuser.data.local.TournemntDao
+import com.example.livescoreuser.data.response.TournamentSearchResponse
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -25,6 +26,7 @@ class WelcomViewModel(private val repository: MatchRepository,private val reposi
         emptyMap()
     )
     val tournament: SnapshotStateList<TournamentUserResponse> = mutableStateListOf()
+    val tournamentName: SnapshotStateList<TournamentSearchResponse> = mutableStateListOf()
 
 
     var job: Job? = null
@@ -36,6 +38,27 @@ class WelcomViewModel(private val repository: MatchRepository,private val reposi
                     .toMap()
             }
 
+        }
+    }
+    fun getTournamentNameSearch(name:String){
+        if (tournamentName.isEmpty()) {
+            viewModelScope.launch(Dispatchers.IO) {
+                repository.getTournamentName(name).collect {
+                    when (it.status) {
+                        Status.LOADING -> {
+
+                        }
+                        Status.SUCCESS -> {
+                            val result = it.data as List<TournamentSearchResponse>
+                            tournamentName.clear()
+                            tournamentName.addAll(result)
+                        }
+                        Status.ERROR -> {
+
+                        }
+                    }
+                }
+            }
         }
     }
     fun getTournamentList(){

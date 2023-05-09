@@ -36,6 +36,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.livescoresdu.uilibrary.values.click
 import com.example.livescoreuser.R
+import com.example.livescoreuser.presentation.viewmodels.WelcomViewModel
 import ffinbank.myfreedom.uilibrary.values.Base200
 import ffinbank.myfreedom.uilibrary.values.Base500
 import ffinbank.myfreedom.uilibrary.values.Base900
@@ -44,9 +45,11 @@ import ffinbank.myfreedom.uilibrary.values.Orange500
 import ffinbank.myfreedom.uilibrary.values.cornerRadius12
 import ffinbank.myfreedom.uilibrary.values.fontSize16
 import ffinbank.myfreedom.uilibrary.values.regular
+import org.koin.androidx.compose.getViewModel
 
 @Composable
-fun SearchView(state: MutableState<TextFieldValue>) {
+fun SearchView(state: MutableState<TextFieldValue>,
+                viewModel: WelcomViewModel = getViewModel()) {
     TextField(
         value = state.value,
         onValueChange = { value ->
@@ -105,12 +108,15 @@ fun SearchTextField(
     backgroundColor: Color = Base200,
     hint: String = stringResource(id = R.string.search),
     withClearIcon: Boolean = false,
-    onDoneClick: () -> Unit = {}
+    onDoneClick: () -> Unit = {},
+    viewModel: WelcomViewModel = getViewModel()
 ) {
     TextField(
         value = state.value,
         onValueChange = {  value ->
-            state.value = value },
+            state.value = value
+            viewModel.getTournamentNameSearch(value.text)
+        },
         placeholder = {
             Text(
                 text = hint,

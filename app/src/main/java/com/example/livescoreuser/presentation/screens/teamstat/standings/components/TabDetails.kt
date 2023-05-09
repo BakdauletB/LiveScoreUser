@@ -1,10 +1,9 @@
-package com.example.livescore.presentation.screens.standings.components
+package com.example.livescoreuser.presentation.screens.teamstat.standings.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Divider
 import androidx.compose.material.ExperimentalMaterialApi
@@ -14,20 +13,16 @@ import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.example.livescore.presentation.screens.playerstat.*
-import com.example.livescore.presentation.screens.scorers.components.GoalListItem
-import com.example.livescore.presentation.screens.scorers.components.PlayerGoalsItem
-import com.example.livescore.presentation.screens.scorers.components.PointsListItem
+import com.example.livescoreuser.presentation.screens.teamstat.components.PointsListItem
 import com.example.livescore.presentation.screens.standings.*
 import com.example.livescore.presentation.screens.teamstat.TeamGoals
 import com.example.livescore.presentation.screens.teamstat.TeamRedCards
 import com.example.livescore.presentation.screens.teamstat.TeamYellowCards
 import com.example.livescore.util.*
 import com.example.livescoresdu.data.response.PlayerGoalsResponse
-import com.example.livescoresdu.data.response.PointsResponse
 import com.example.livescoresdu.data.response.TeamStatisticsGoalsResponse
 import com.example.livescoreuser.data.response.GroupPointsResponse
 import com.google.accompanist.pager.ExperimentalPagerApi

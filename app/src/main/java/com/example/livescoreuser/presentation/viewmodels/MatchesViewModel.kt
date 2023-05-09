@@ -131,9 +131,11 @@ class MatchesViewModel(private val repository: MatchRepository
     }
     fun refresh() {
         refreshing = true
-        team.clear()
+        newDate.clear()
+        gameLive.clear()
+        loadNewDate(selectDate.value)
+        loadGameLive()
 
-        team.clear()
 
     }
     fun stopRefreshing(){

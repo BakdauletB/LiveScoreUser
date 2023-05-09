@@ -5,6 +5,7 @@ import com.example.livescoresdu.data.response.*
 import com.example.livescoresdu.uilibrary.values.Constants
 import com.example.livescoreuser.data.response.GetNewDateResponse
 import com.example.livescoreuser.data.response.GroupPointsResponse
+import com.example.livescoreuser.data.response.TournamentSearchResponse
 import okhttp3.MultipartBody
 import retrofit2.Response
 import retrofit2.http.*
@@ -94,6 +95,10 @@ interface MatchService {
     suspend fun getTournament(
         @Query("userId") userId:Int
     ): Response<List<TournamentUserResponse>>
+    @GET(Constants.GET_TOURNAMENT_NAME)
+    suspend fun getTournamentName(
+        @Query("name") name:String
+    ): Response<List<TournamentSearchResponse>>
     @GET(Constants.GET_TEAM)
     suspend fun getTeam(
     ): Response<List<TeamResponse>>
@@ -144,6 +149,7 @@ interface MatchService {
     @GET(Constants.GET_GAME_LIVE)
     suspend fun getGameLive(
     ):  Response<List<GetNewDateResponse>>
+
 
 
 

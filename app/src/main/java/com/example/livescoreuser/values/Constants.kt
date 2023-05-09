@@ -4,7 +4,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.Black
 
 object Constants {
-    const val BASE_URL = "http://192.168.0.105:8081/"
+    const val BASE_URL = "http://192.168.0.106:8081/"
 
     const val API_KEY_TWO = "5854abc0-36b8-11ed-b9f8-af3e9ecb0bee"
 
@@ -63,6 +63,7 @@ object Constants {
     const val GET_GAME_NEW_DATE = "game/new/date"
     const val GET_GAME_LIVE = "game/live"
     const val GET_GROUP_INFO = "group_info/group/points"
+    const val GET_TOURNAMENT_NAME = "tournament/tournament_name"
 
 
 }

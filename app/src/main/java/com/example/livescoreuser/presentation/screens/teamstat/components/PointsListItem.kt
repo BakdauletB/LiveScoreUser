@@ -1,8 +1,7 @@
-package com.example.livescore.presentation.screens.scorers.components
+package com.example.livescoreuser.presentation.screens.teamstat.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Divider
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -10,7 +9,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import com.example.livescore.util.*
+import coil.compose.rememberAsyncImagePainter
 import com.example.livescoresdu.data.response.PointsResponse
 import ffinbank.myfreedom.uilibrary.values.*
 
@@ -29,7 +28,7 @@ fun PointsListItem(pointsResponse: PointsResponse, count: Int){
             )
             Spacer(modifier = Modifier.width(spacing6))
             Image(
-                painter = painterResource(id = com.example.livescoreuser.R.drawable.barabar),
+                painter = rememberAsyncImagePainter(model = pointsResponse.teamLogo),
                 contentDescription = "Team logo",
                 modifier = Modifier
                     .size(spacing32)

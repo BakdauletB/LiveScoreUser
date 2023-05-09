@@ -111,11 +111,9 @@ fun MatchesScreen(navController: NavController,
             openTeamBottomSheet.value = it != ModalBottomSheetValue.Hidden
             return@rememberModalBottomSheetState true
         }
-    if(viewModel.gameState != UiStatus.LOADING &&
-            viewModel.gameState1 != UiStatus.LOADING ||
-            viewModel.gameState2 != UiStatus.LOADING ||
-            viewModel.gameState3 != UiStatus.LOADING ||
-            viewModel.gameState4 != UiStatus.LOADING){
+    if(viewModel.newGameState != UiStatus.LOADING &&
+                viewModel.liveGameState != UiStatus.LOADING
+            ){
         viewModel.stopRefreshing()
     }
     val pullRefreshState = rememberPullRefreshState(
@@ -157,7 +155,9 @@ fun MatchesScreen(navController: NavController,
             onDocumentClick.value = false
         }
     )
-
+    val live = remember {
+        mutableStateOf(false)
+    }
 
     Box(
         modifier = Modifier
@@ -175,8 +175,8 @@ fun MatchesScreen(navController: NavController,
                     Spacer(modifier = Modifier.height(spacing32))
                     Row(
                         modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(start = spacing6, end = spacing6),
+                            .fillMaxWidth(),
+//                            .padding(start = spacing6, end = spacing6),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
 
@@ -195,9 +195,11 @@ fun MatchesScreen(navController: NavController,
                                         weekDaysTextColor = Color.White
                                     ), onDayClick = {
                                         currentDate.value = it
+                                        viewModel.loadNewDate(viewModel.selectDate.value)
+
                                     }, onLiveClick = {
-//                                        live.value = true
-//                                        viewModel.loadGameLive()
+                                        live.value = true
+                                        viewModel.loadGameLive()
 
                                     }
                                 )
@@ -218,11 +220,11 @@ fun MatchesScreen(navController: NavController,
                     modifier = Modifier
                         .fillMaxSize()
                 ) {
-//                    if(live.value){
-//                        ListLiveGame(navController,viewModel.gameLive)
-//                    } else {
+                    if(live.value){
+                        ListLiveGame(navController,viewModel.gameLive)
+                    } else {
                         ListGame(navController = navController, newDateResponse = newDate, alert,)
-                    //}
+                    }
                 }
             }
             it.calculateBottomPadding()
@@ -277,6 +279,25 @@ fun MatchesScreen(navController: NavController,
 
 }
 @Composable
+fun ListLiveGame(
+    navController:NavController,
+    live:SnapshotStateList<GetNewDateResponse>
+){
+    LazyColumn(modifier = Modifier
+        .background(color = Base900)){
+        item {
+            live.getOrNull(0)?.games?.forEachIndexed { index, newDateResponse ->
+                MatchItem(modifier = Modifier, games = newDateResponse, onClick = {
+                    IdBundle.id = newDateResponse.protocolId
+                    navController.navigate(HomeDestinations.MATCH_DETAIL_ADMIN + "/${newDateResponse.protocolId}")
+                })
+
+            }
+        }
+    }
+
+}
+@Composable
 fun ListGame(navController: NavController,
 //             gameDateResponse: SnapshotStateList<GameDateResponse>,
              newDateResponse: SnapshotStateList<GetNewDateResponse>,
@@ -311,22 +332,9 @@ fun ListGame(navController: NavController,
                         })
                     }
                 }
-//            items(gameDateResponse.){ game ->
-//                MatchItem(modifier = Modifier, gameDateResponse = game) {
-////                    navController.navigate(Screen.MatchDetailsScreen.route + "/${game.gameId}")
-//
-//                }
-//            }
         }
     }
-//    if (onDocumentClick.value) {
-//        RequestStoragePermission(
-//            onPermissionDenied = {},
-//            onPermissionGranted = {
-//                documentPickerLauncher.launch(swiftFileMimeTypes)
-//            }
-//        )
-//    }
+
 }
 @Composable
 fun LeagueItem(
@@ -334,7 +342,7 @@ fun LeagueItem(
     onClick: () -> Unit
 ){
     Row(modifier = Modifier.clickable {
-                                      onClick()
+        onClick()
     }, verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.Center) {
         Column(modifier = Modifier
             .padding(start = spacing10)

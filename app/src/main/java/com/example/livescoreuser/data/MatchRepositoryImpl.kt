@@ -11,6 +11,7 @@ import com.example.livescoresdu.presentation.screens.bundle.TokenBundle
 import com.example.livescoresdu.uilibrary.values.Event
 import com.example.livescoreuser.data.response.GetNewDateResponse
 import com.example.livescoreuser.data.response.GroupPointsResponse
+import com.example.livescoreuser.data.response.TournamentSearchResponse
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -227,6 +228,18 @@ class MatchRepositoryImpl(private val dataSource: MatchService,
         emit(Event.loading())
 
         val response = dataSource.getTournament(userId = userId)
+        if (response.isSuccessfulAndBodyIsNotNull()) {
+            emit(Event.success(response.body()))
+            return@flow
+        }
+
+        val errorMessage = withContext(Dispatchers.IO) { response.errorBody()?.string() }
+        emit(Event.error(errorMessage))
+    }
+    override suspend fun getTournamentName(name: String): Flow<Event<List<TournamentSearchResponse>>> = flow {
+        emit(Event.loading())
+
+        val response = dataSource.getTournamentName(name = name)
         if (response.isSuccessfulAndBodyIsNotNull()) {
             emit(Event.success(response.body()))
             return@flow

@@ -14,6 +14,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.mabn.calendarlibrary.core.CalendarTheme
+import ffinbank.myfreedom.uilibrary.values.Orange500
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.format.TextStyle
@@ -41,7 +42,7 @@ fun DayView(
             shape = theme.dayShape
         )
         else if (isSelected) modifier.background(
-            theme.selectedDayBackgroundColor,
+            Orange500,
             shape = theme.dayShape
         )
         else modifier.background(theme.dayBackgroundColor, shape = theme.dayShape)

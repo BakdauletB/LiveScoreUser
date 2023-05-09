@@ -5,6 +5,7 @@ import com.example.livescoresdu.data.response.*
 import com.example.livescoresdu.uilibrary.values.Event
 import com.example.livescoreuser.data.response.GetNewDateResponse
 import com.example.livescoreuser.data.response.GroupPointsResponse
+import com.example.livescoreuser.data.response.TournamentSearchResponse
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -33,6 +34,7 @@ interface MatchRepository {
     suspend fun postEventGoal(body: EventGoalRequest): Flow<Event<Any>>
     suspend fun postEvent(body: EventRequest): Flow<Event<Any>>
     suspend fun getTournament(userId:Int): Flow<Event<List<TournamentUserResponse>>>
+    suspend fun getTournamentName(name:String): Flow<Event<List<TournamentSearchResponse>>>
     suspend fun getTeams(): Flow<Event<List<TeamResponse>>>
     suspend fun getPlayer(team_id: Int): Flow<Event<List<PlayerResponse>>>
     suspend fun getGroup(tournamentId: Int): Flow<Event<List<GroupResponse>>>

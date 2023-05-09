@@ -15,6 +15,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.rememberAsyncImagePainter
 import coil.compose.rememberImagePainter
 import com.example.livescore.util.*
 import com.example.livescoresdu.data.response.TeamStatisticsGoalsResponse
@@ -31,7 +32,7 @@ fun GoalListItem(team: TeamStatisticsGoalsResponse, count: Int){
             )
             Spacer(modifier = Modifier.width(spacing6))
             Image(
-                painter = painterResource(id = com.example.livescoreuser.R.drawable.barabar),
+                painter = rememberAsyncImagePainter(model = team.teamLogo),
                 contentDescription = "Team logo",
                 modifier = Modifier
                     .size(spacing32)

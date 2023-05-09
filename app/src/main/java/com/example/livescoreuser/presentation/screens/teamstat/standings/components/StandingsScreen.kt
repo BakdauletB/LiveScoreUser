@@ -15,12 +15,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
 import com.example.livescore.util.*
-import com.example.livescoresdu.presentation.viewmodels.MatchesViewModel
 import com.example.livescoreuser.R
+import com.example.livescoreuser.presentation.screens.teamstat.standings.components.Matches
+import com.example.livescoreuser.presentation.screens.teamstat.standings.components.Overview
+import com.example.livescoreuser.presentation.screens.teamstat.standings.components.PlayerStats
 import com.example.livescoreuser.presentation.screens.teamstat.standings.components.StandingsViewModel
+import com.example.livescoreuser.presentation.screens.teamstat.standings.components.Table
+import com.example.livescoreuser.presentation.screens.teamstat.standings.components.TeamStats
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState

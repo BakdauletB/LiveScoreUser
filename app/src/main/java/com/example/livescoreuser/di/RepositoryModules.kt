@@ -19,6 +19,7 @@ internal val transfersRepositoryModule = module {
     single { get<Retrofit>().create(MatchService::class.java) }
     single<MatchRepository> {
         MatchRepositoryImpl(get(),Room.databaseBuilder(get(), LivescoreDatabase::class.java, "my_database")
+            .fallbackToDestructiveMigration()
             .build() )
     }
     single<MatchRepositoryImpl> { MatchRepositoryImpl(get(),Room.databaseBuilder(get(), LivescoreDatabase::class.java, "my_database")
@@ -27,6 +28,7 @@ internal val transfersRepositoryModule = module {
 
     single {
         Room.databaseBuilder(get(), LivescoreDatabase::class.java, "my_database")
+            .fallbackToDestructiveMigration()
             .build()
     }
 }
